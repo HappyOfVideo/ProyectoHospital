@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/./frontend/generated/jar-resources",
+  "staticOutput": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "C:\\Users\\diego\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoFinalVaadin\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "C:\\Users\\diego\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoFinalVaadin\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/target/dev-bundle/webapp",
+  "devBundleStatsOutput": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/target/dev-bundle/config",
+  "jarResourcesFolder": "C:/Users/diego/OneDrive/Documentos/NetBeansProjects/ProyectoFinalVaadin/./frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\diego\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoFinalVaadin\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
