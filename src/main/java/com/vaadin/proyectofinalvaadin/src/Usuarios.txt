@@ -1,0 +1,12 @@
+Jeronimo;Toro;1017283418;Administrador
+Diego;Rios;1026398734;Administrador
+Miguel;Arbelaez;1027623198;Administrador
+Carlos;Mosquera;1027349578;Administrador
+Alejandro;Rodriguez;1392384123;Medico
+Andrea;Gonzales;1017234567;Medico
+Valeria;Alvarez;1043567123;Medico
+William;Martinez;1017931578;Medico
+Sara;Perez;1656921567;Enfermero
+Samuel;Hernandez;1027931823;Enfermero
+Bryan;Valencia;1029187625;Enfermero
+Sebastian;Gomez;10293448567;Enfermero
