@@ -26,7 +26,7 @@ public class Procesos {
 
             // Procesos
 
-            datosVoluntario.readLine(); // Lee la linea del encabezado
+            /*datosVoluntario.readLine(); // Lee la linea del encabezado
 
             while ( (linea = datosVoluntario.readLine()) != null ) {
                 
@@ -52,7 +52,7 @@ public class Procesos {
 
                 escritura.close();
 
-            }
+            }*/
 
             return tipoMenu;
 

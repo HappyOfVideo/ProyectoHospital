@@ -1,12 +1,21 @@
 package com.vaadin.proyectofinalvaadin;
 
 import com.vaadin.proyectofinalvaadin.Controller.Procesos;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.Buffer;
+
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -16,167 +25,241 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class IndexView extends VerticalLayout {
 
-    // Variables Globales
+        // Variables Globales
 
-    // Inicio sesion 
-    
-    // divform
-    public static VerticalLayout divForm;
+        // Inicio sesion 
+        
+        // Inicialización
+        public static VerticalLayout divForm;
+        public static Select<String> tipoUserSelect;
+        public static NumberField userField;
+        public static TextField passwordField;
+        public static Button ingresarButton;
 
-    // Interactivos para inicio sesion
-    public static Select<String> tipoUserSelect;
-    public static TextField nombreField;
-    public static TextField apellidoField;
-    public static NumberField dIField;
+        // (Uso de IA para apoyo en ubicacion de margenes y alineamientos)
+        public IndexView() {
 
-    // Boton ingresar(Inicio sesion)
-    public static Button ingresarButton;
+                // hace que entre los layouts del @Route se ocupe todo el espacio disponible    (IA)
+                setSizeFull();
+                setPadding(false);
+                setMargin(false);
+                setSpacing(false);
 
-    // (Uso de IA para apoyo en ubicacion de margenes y alineamientos)
-    public IndexView() {
+                // main layout
+                VerticalLayout main = new VerticalLayout();
+                // ajuste de espacios del main layout   (IA)
+                main.setSizeFull();
+                main.setPadding(false);
+                main.setMargin(false);
+                main.setSpacing(false);
 
-        // hace que entre los layouts del @Route se ocupe todo el espacio disponible
-        // (IA)
-        setSizeFull();
-        setPadding(false);
-        setMargin(false);
-        setSpacing(false);
+                // hero layout
+                FormLayout hero = new FormLayout();
+                hero.setResponsiveSteps(
+                        new FormLayout.ResponsiveStep("0", 1),
+                        new FormLayout.ResponsiveStep("600px", 2)
+                );
 
-        // main layout
-        VerticalLayout main = new VerticalLayout();
-        // ajuste de espacios del main layout (IA)
-        main.setSizeFull();
-        main.setPadding(false);
-        main.setMargin(false);
-        main.setSpacing(false);
+                construirHero(hero);
 
-        // hero layout
-        FormLayout hero = new FormLayout();
-        hero.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1),
-                new FormLayout.ResponsiveStep("600px", 2));
+                main.add(hero);
 
-        construirHero(hero);
+                add(main);
 
-        main.add(hero);
-
-        add(main);
-
-    }
-
-    // Construir hero agregara los componentes del encabezado inicial de la pagina
-    public void construirHero(FormLayout hero) {
-        try {
-
-            VerticalLayout leftSide = new VerticalLayout();
-            VerticalLayout rightSide = new VerticalLayout();
-
-            // Ajustes de VerticalLayouts
-            leftSide.setAlignItems(Alignment.CENTER);
-            leftSide.getStyle()
-                    .set("align-self", "flex-start") // (IA)
-                    .set("background-color", "#B0B0B0");
-            leftSide.setHeight("729px");
-
-            rightSide.setAlignItems(Alignment.CENTER);
-            rightSide.getStyle().set("align-self", "flex-start"); // (IA)
-            rightSide.setHeight("729px");
-
-            // leftSide -> Marca (logo)
-            Image logo = new Image("https://i.imgur.com/IX0v7k1.png", "Logo del hospital");
-
-            // Ajustes de logo
-            logo.setWidth("400px");
-            logo.setHeight("auto");
-            logo.getStyle().set("margin-top", "120px");
-
-            // rightSide -> panel de inicio de sesion
-            // Titulo y subtitulo
-            H1 inicioSesion = new H1("Inicio de sesión");
-            H4 instrucciones = new H4("Bienvenido a Montelíbano, porfavor ingrese sus datos");
-
-            // Ajuste de textos
-            inicioSesion.getStyle()
-                    .set("text-align", "center")
-                    .set("margin", "0")
-                    .set("width", "100%")
-                    .set("margin-top", "50px");
-
-            instrucciones.getStyle()
-                    .set("text-align", "center")
-                    .set("margin", "0 0 1rem 0")
-                    .set("width", "100%")
-                    .set("color", "#a3a3a3ff");
-
-            // Formulario inicio de sesión
-            FormLayout formLayout = new FormLayout();
-            formLayout.setWidth("100%");
-            formLayout.getStyle()
-                    .set("margin-top", "50px")
-                    .set("margin-left", "-10px");
-
-            // Configurar pasos responsivos
-            formLayout.setResponsiveSteps(
-                    new FormLayout.ResponsiveStep("0", 1));
-
-            // Campos del formulario
-            tipoUserSelect = new Select<>();
-            tipoUserSelect.setLabel("Tipo usuario");
-            tipoUserSelect.setItems("Administrativo", "Médico", "Enfermero(a)");
-            tipoUserSelect.setPlaceholder("Seleccione tipo");
-            tipoUserSelect.setMinWidth("300px");
-            nombreField = new TextField("Nombre");
-            nombreField.setPlaceholder("Ingrese su primer nombre");
-            nombreField.setMinWidth("300px");
-            apellidoField = new TextField("Apellido");
-            apellidoField.setPlaceholder("Ingrese su primer apellido");
-            apellidoField.setMinWidth("300px");
-            dIField = new NumberField("Documento de identificación");
-            dIField.setPlaceholder("•••••••••••••");
-            dIField.setMinWidth("300px");
-
-            // Botón de ingreso (agregado para completar el formulario)
-            ingresarButton = new Button("Ingresar");
-            // Ajustes botón
-            ingresarButton.setMinWidth("180px");
-            ingresarButton.getStyle()
-                    .set("margin-top", "20px")
-                    .set("margin-bottom", "50px")
-                    .set("background-color", "#1C4C5D")
-                    .set("color", "#ffffffff");
-
-                    // Acción del botón para que al darle click redirija al menu de medico y
-        // enfermeros
-        ingresarButton.addClickListener(event -> {
-            getUI().ifPresent(ui -> ui.navigate("menu"));
-        });
-            
-            // VerticalLayout para alinear objetos al centro y crear un cubo de formulario
-            divForm = new VerticalLayout();
-            divForm.setWidthFull();
-            divForm.getStyle()
-                    .set("padding", "20px")
-                    .set("border-radius", "50px");
-            divForm.setAlignItems(Alignment.CENTER);
-
-            divForm.add(inicioSesion, instrucciones, tipoUserSelect, nombreField, apellidoField, dIField, ingresarButton);
-
-            // Agregar campos al formulario
-            formLayout.add(divForm);
-
-            // Agregar componentes de leftSide
-            leftSide.add(logo);
-
-            // Agregar componentes de rightSide
-            rightSide.add(formLayout);
-
-            // Agregar componentes de hero
-            hero.add(leftSide, rightSide);
-
-        } catch (Exception e) {
-            String error = e.getMessage();
-            System.err.println("Error en construirHero: " + error);
-            e.printStackTrace();
         }
-    }
+
+        // Construir hero, agregara los componentes del encabezado inicial de la pagina
+        public void construirHero(FormLayout hero) {
+                try {
+
+                        VerticalLayout leftSide = new VerticalLayout();
+                        VerticalLayout rightSide = new VerticalLayout();
+
+                        // Ajustes de VerticalLayouts
+                        leftSide.setAlignItems(Alignment.CENTER);
+                        leftSide.getStyle()
+                                .set("align-self", "flex-start")    //(IA)
+                                .set("background-color", "#B0B0B0")
+                        ;
+                        leftSide.setHeight("729px");
+
+                        rightSide.setAlignItems(Alignment.CENTER);
+                        rightSide.getStyle().set("align-self", "flex-start");       //(IA)
+                        rightSide.setHeight("729px");
+
+                        // leftSide -> Marca (logo)
+                        Image logo = new Image("https://i.imgur.com/IX0v7k1.png", "Logo del hospital");
+
+                        // Ajustes de logo
+                        logo.setWidth("400px");
+                        logo.setHeight("auto");
+                        logo.getStyle().set("margin-top", "120px");
+
+                        // rightSide -> panel de inicio de sesion
+                        // Titulo y subtitulo
+                        H1 inicioSesion = new H1("Inicio de sesión");
+                        H4 instrucciones = new H4("Bienvenido a Montelíbano, porfavor ingrese sus datos");
+
+                        // Ajuste de textos
+                        inicioSesion.getStyle()
+                                .set("text-align", "center")
+                                .set("margin", "0")
+                                .set("width", "100%")
+                                .set("margin-top", "50px")
+                        ;
+
+                        instrucciones.getStyle()
+                                .set("text-align", "center")
+                                .set("margin", "0 0 1rem 0")
+                                .set("width", "100%")
+                                .set("color", "#a3a3a3ff")
+                        ;
+
+                        // Formulario inicio de sesión
+                        FormLayout formLayout = new FormLayout();
+                        formLayout.setWidth("100%");
+                        formLayout.getStyle()
+                                .set("margin-top", "50px")
+                                .set("margin-left", "-10px")
+                        ;
+
+                        // Configurar pasos responsivos
+                        formLayout.setResponsiveSteps(
+                                new FormLayout.ResponsiveStep("0", 1)
+                        );
+
+                        // Campos del formulario
+                        tipoUserSelect = new Select<>();
+                        tipoUserSelect.setLabel("Tipo usuario");
+                        tipoUserSelect.setItems("Administrativo", "Médico", "Enfermero(a)");
+                        tipoUserSelect.setPlaceholder("Seleccione tipo");
+                        tipoUserSelect.setMinWidth("300px");
+                        userField = new NumberField("Usuario");
+                        userField.setPlaceholder("ID del hospital");
+                        userField.setMinWidth("300px");
+                        passwordField = new TextField("Ingrese la contraseña");
+                        passwordField.setPlaceholder("•••••••••••••");
+                        passwordField.setMinWidth("300px");
+
+                        // Botón de ingreso (agregado para completar el formulario)
+                        ingresarButton = new Button("Ingresar");
+                        // Ajustes botón
+                        ingresarButton.setMinWidth("180px");
+                        ingresarButton.getStyle()
+                                .set("margin-top", "20px")
+                                .set("margin-bottom", "50px")
+                                .set("background-color", "#1C4C5D")
+                                .set("color", "#ffffffff")
+                        ;
+
+                        // Acción del botón --> Verifica "base de datos" y redirije a su repectiva página
+                        ingresarButton.addClickListener( event -> {
+                                try {
+                                        String tipoU = tipoUserSelect.getValue();
+                                        Double userN = userField.getValue();
+                                        String password = passwordField.getValue();
+
+                                        if(tipoU == null || userN == null || password.isEmpty()){
+                                                Notification.show("Porfavor complete todos los campos");
+                                                return;
+                                        }
+
+                                        try {
+                                                boolean acceso = verificarCredenciales(tipoU,userN,password);
+
+                                                if (acceso) {
+                                                        if(tipoU.equals("Administrativo")){
+                                                        UI.getCurrent().navigate("administrativo");
+                                                        }else if(tipoU.equals("Médico")){
+                                                                UI.getCurrent().navigate("medico");
+                                                        }else if(tipoU.equals("Enfermero(a)")){
+                                                                UI.getCurrent().navigate("enfermero");
+                                                        }
+                                                }else{
+                                                        Notification.show("Datos incorrectos, intente nuevamente");
+                                                }
+
+                                        } catch (IOException e) {
+                                                Notification.show("Error al leer el archivo de usuarios");
+                                        }
+                                        
+                                } catch (Exception e) {
+                                        Notification.show("Error en el botón, porfavor comunicarse con soporte");
+                                }
+
+                        });
+                        
+                        // VerticalLayout para alinear objetos al centro y crear un cubo de formulario
+                        divForm = new VerticalLayout();
+                        divForm.setWidthFull();
+                        divForm.getStyle().set("padding", "20px");
+                        divForm.setAlignItems(Alignment.CENTER);
+
+                        divForm.add(inicioSesion, instrucciones, tipoUserSelect, userField, passwordField, ingresarButton);
+
+                        // Agregar campos al formulario
+                        formLayout.add(divForm);
+
+                        // Agregar componentes de leftSide
+                        leftSide.add(logo);
+
+                        // Agregar componentes de rightSide
+                        rightSide.add(formLayout);
+
+                        // Agregar componentes de hero
+                        hero.add(leftSide, rightSide);
+
+                } catch (Exception e) {
+                String error = e.getMessage();
+                System.err.println("Error en construirHero: " + error);
+                e.printStackTrace();
+                }
+        }
+
+        //Uso de IA para apayo en validación del archivo(Donde se utilizo se puso "(IA)")
+        public static boolean verificarCredenciales(String tipo, Double user, String passw) throws IOException{
+                File ubicaciónArchivo = null;
+                FileReader archivoLectura = null;
+                BufferedReader datosArchivo = null;
+                boolean credencialesValidas = false;    //(IA)
+                try {
+                        ubicaciónArchivo = new File("src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\Usuarios.txt");    //Ubicar archivo
+                        archivoLectura = new FileReader(ubicaciónArchivo);                                                               //Abrir archivo
+                        datosArchivo = new BufferedReader(archivoLectura);                                                              //Cargar datos en memoria
+
+                        String linea = "";
+                        String[] datosSeparados = null;
+                        String datoTipo = "";
+                        String datoUser = "";
+                        String datoPassword = "";
+
+                        datosArchivo.readLine(); //Lee elencabezado, para no incluirlo en el ciclo
+                        while ((linea = datosArchivo.readLine()) != null) {
+                                if (linea.trim().isEmpty()) {
+                                        continue; //Vualve a hacer otra iteración
+                                }
+
+                                datosSeparados = linea.trim().split(";");      //Separa los datos en los ";"
+                                //Se omite la lectura de la primera columna debido a que no se utiliza en el inicio de sesión (Nombre)
+                                datoTipo = datosSeparados[1].trim();                  //Lee la columna 2 del archivo (Tipo de usuario)
+                                datoUser = datosSeparados[2].trim();                  //Lee la columna 3 del archivo (Usuario)
+                                datoPassword = datosSeparados[3].trim();              //Lee la columna 4 del archivo (Contraseña)
+
+                                //(IA)
+                                if (datoTipo.equalsIgnoreCase(tipo)
+                                        && datoUser.equals(String.valueOf(user.longValue()))
+                                        && datoPassword.equals(passw)
+                                ) {
+                                        credencialesValidas = true;
+                                        break;
+                                }
+                        }
+                        
+                } catch (Exception e) {
+                        e.printStackTrace();    //Da la linea exacta donde está el problema
+                }finally{
+                        datosArchivo.close();   //Cierra el archivo
+                }
+                return credencialesValidas;     //Retorna true o false para la verificación
+        }
 }
