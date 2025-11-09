@@ -1,5 +1,7 @@
 package com.vaadin.proyectofinalvaadin;
 
+import com.vaadin.proyectofinalvaadin.Controller.Procesos;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
@@ -14,29 +16,45 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class IndexView extends VerticalLayout {
 
-    //(Uso de IA para apoyo en ubicacion de margenes y aliniamientos)
+    // Variables Globales
+
+    // Inicio sesion 
+    
+    // divform
+    public static VerticalLayout divForm;
+
+    // Interactivos para inicio sesion
+    public static Select<String> tipoUserSelect;
+    public static TextField nombreField;
+    public static TextField apellidoField;
+    public static NumberField dIField;
+
+    // Boton ingresar(Inicio sesion)
+    public static Button ingresarButton;
+
+    // (Uso de IA para apoyo en ubicacion de margenes y alineamientos)
     public IndexView() {
 
-        //hace que entre los layouts del @Route se ocupe todo el espacio disponible     (IA)
+        // hace que entre los layouts del @Route se ocupe todo el espacio disponible
+        // (IA)
         setSizeFull();
         setPadding(false);
         setMargin(false);
         setSpacing(false);
 
-        //main layout
+        // main layout
         VerticalLayout main = new VerticalLayout();
-        //ajuste de espacios del main layout    (IA)
+        // ajuste de espacios del main layout (IA)
         main.setSizeFull();
         main.setPadding(false);
         main.setMargin(false);
         main.setSpacing(false);
 
-        //hero layout
+        // hero layout
         FormLayout hero = new FormLayout();
         hero.setResponsiveSteps(
-            new FormLayout.ResponsiveStep("0", 1),
-            new FormLayout.ResponsiveStep("600px", 2)
-        );
+                new FormLayout.ResponsiveStep("0", 1),
+                new FormLayout.ResponsiveStep("600px", 2));
 
         construirHero(hero);
 
@@ -46,108 +64,116 @@ public class IndexView extends VerticalLayout {
 
     }
 
-    // Construir hero agregara los componentes del encabezado inicial de la pagina 
-    public static void construirHero(FormLayout hero) {
+    // Construir hero agregara los componentes del encabezado inicial de la pagina
+    public void construirHero(FormLayout hero) {
         try {
 
-            VerticalLayout leftSide = new VerticalLayout(); 
+            VerticalLayout leftSide = new VerticalLayout();
             VerticalLayout rightSide = new VerticalLayout();
 
-            //Ajustes de VerticalLayouts
+            // Ajustes de VerticalLayouts
             leftSide.setAlignItems(Alignment.CENTER);
             leftSide.getStyle()
-            .set("align-self", "flex-start")    //(IA)
-            .set("background-color","#B0B0B0");
+                    .set("align-self", "flex-start") // (IA)
+                    .set("background-color", "#B0B0B0");
             leftSide.setHeight("729px");
 
             rightSide.setAlignItems(Alignment.CENTER);
-            rightSide.getStyle().set("align-self", "flex-start");    //(IA)
+            rightSide.getStyle().set("align-self", "flex-start"); // (IA)
             rightSide.setHeight("729px");
 
             // leftSide -> Marca (logo)
             Image logo = new Image("https://i.imgur.com/IX0v7k1.png", "Logo del hospital");
 
             // Ajustes de logo
-            logo.setWidth("400px"); 
+            logo.setWidth("400px");
             logo.setHeight("auto");
             logo.getStyle().set("margin-top", "120px");
-            
+
             // rightSide -> panel de inicio de sesion
             // Titulo y subtitulo
             H1 inicioSesion = new H1("Inicio de sesión");
             H4 instrucciones = new H4("Bienvenido a Montelíbano, porfavor ingrese sus datos");
-            
+
             // Ajuste de textos
             inicioSesion.getStyle()
-            .set("text-align", "center")
-            .set("margin", "0")
-            .set("width", "100%")
-            .set("margin-top","50px");
-            
-            instrucciones.getStyle()
-            .set("text-align", "center")
-            .set("margin", "0 0 1rem 0")
-            .set("width", "100%")
-            .set("color", "#a3a3a3ff");
+                    .set("text-align", "center")
+                    .set("margin", "0")
+                    .set("width", "100%")
+                    .set("margin-top", "50px");
 
-            //Formulario inicio de sesión
+            instrucciones.getStyle()
+                    .set("text-align", "center")
+                    .set("margin", "0 0 1rem 0")
+                    .set("width", "100%")
+                    .set("color", "#a3a3a3ff");
+
+            // Formulario inicio de sesión
             FormLayout formLayout = new FormLayout();
             formLayout.setWidth("100%");
             formLayout.getStyle()
-            .set("margin-top", "50px")
-            .set("margin-left", "-10px");
+                    .set("margin-top", "50px")
+                    .set("margin-left", "-10px");
 
             // Configurar pasos responsivos
             formLayout.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1)
-            );
-            
+                    new FormLayout.ResponsiveStep("0", 1));
+
             // Campos del formulario
-            Select<String> tipoUser = new Select<>();
-            tipoUser.setLabel("Tipo usuario");
-            tipoUser.setItems("Administrativo","Médico","Enfermero(a)");
-            tipoUser.setPlaceholder("Seleccione tipo");
-            tipoUser.setMinWidth("300px");
-            NumberField user = new NumberField("Usuario");
-            user.setPlaceholder("ID del hospital");
-            user.setMinWidth("300px");
-            TextField password = new TextField("Contraseña");
-            password.setPlaceholder("•••••••••••••");
-            password.setMinWidth("300px");
-            
-            //Botón de ingreso (agregado para completar el formulario)
-            Button ingresarButton = new Button("Ingresar");
-            //Ajustes botón
+            tipoUserSelect = new Select<>();
+            tipoUserSelect.setLabel("Tipo usuario");
+            tipoUserSelect.setItems("Administrativo", "Médico", "Enfermero(a)");
+            tipoUserSelect.setPlaceholder("Seleccione tipo");
+            tipoUserSelect.setMinWidth("300px");
+            nombreField = new TextField("Nombre");
+            nombreField.setPlaceholder("Ingrese su primer nombre");
+            nombreField.setMinWidth("300px");
+            apellidoField = new TextField("Apellido");
+            apellidoField.setPlaceholder("Ingrese su primer apellido");
+            apellidoField.setMinWidth("300px");
+            dIField = new NumberField("Documento de identificación");
+            dIField.setPlaceholder("•••••••••••••");
+            dIField.setMinWidth("300px");
+
+            // Botón de ingreso (agregado para completar el formulario)
+            ingresarButton = new Button("Ingresar");
+            // Ajustes botón
             ingresarButton.setMinWidth("180px");
             ingresarButton.getStyle()
-            .set("margin-top", "20px")
-            .set("margin-bottom", "50px")
-            .set("background-color", "#1C4C5D")
-            .set("color", "#ffffffff");
+                    .set("margin-top", "20px")
+                    .set("margin-bottom", "50px")
+                    .set("background-color", "#1C4C5D")
+                    .set("color", "#ffffffff");
 
-            //VerticalLayout para alinear objetos al centro y crear un cubo de formulario
-            VerticalLayout divForm = new VerticalLayout();
+                    // Acción del botón para que al darle click redirija al menu de medico y
+        // enfermeros
+        ingresarButton.addClickListener(event -> {
+            getUI().ifPresent(ui -> ui.navigate("menu"));
+        });
+            
+            // VerticalLayout para alinear objetos al centro y crear un cubo de formulario
+            divForm = new VerticalLayout();
             divForm.setWidthFull();
             divForm.getStyle()
-            .set("padding", "20px")
-            .set("border-radius", "50px");
+                    .set("padding", "20px")
+                    .set("border-radius", "50px");
             divForm.setAlignItems(Alignment.CENTER);
 
-            divForm.add(inicioSesion, instrucciones, tipoUser, user,password,ingresarButton);
-            
-            //Agregar campos al formulario
+            divForm.add(inicioSesion, instrucciones, tipoUserSelect, nombreField, apellidoField, dIField, ingresarButton);
+
+            // Agregar campos al formulario
             formLayout.add(divForm);
 
-            //Agregar componentes de leftSide
+            // Agregar componentes de leftSide
             leftSide.add(logo);
 
-            //Agregar componentes de rightSide
+            // Agregar componentes de rightSide
             rightSide.add(formLayout);
 
-            //Agregar componentes de hero   
+            // Agregar componentes de hero
             hero.add(leftSide, rightSide);
-                
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             String error = e.getMessage();
             System.err.println("Error en construirHero: " + error);
             e.printStackTrace();
