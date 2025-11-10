@@ -1,14 +1,10 @@
 package com.vaadin.proyectofinalvaadin;
 
-import com.vaadin.proyectofinalvaadin.Controller.Procesos;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.Buffer;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -223,7 +219,7 @@ public class IndexView extends VerticalLayout {
                 BufferedReader datosArchivo = null;
                 boolean credencialesValidas = false;    //(IA)
                 try {
-                        ubicaciónArchivo = new File("src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\Usuarios.txt");    //Ubicar archivo
+                        ubicaciónArchivo = new File("hospital\\src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\Usuarios.txt");    //Ubicar archivo
                         archivoLectura = new FileReader(ubicaciónArchivo);                                                               //Abrir archivo
                         datosArchivo = new BufferedReader(archivoLectura);                                                              //Cargar datos en memoria
 
