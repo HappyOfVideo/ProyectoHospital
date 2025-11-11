@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.vaadin.proyectofinalvaadin.Controller.Procesos;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -154,6 +155,7 @@ public class IndexView extends VerticalLayout {
                                         String tipoU = tipoUserSelect.getValue();
                                         Double userN = userField.getValue();
                                         String password = passwordField.getValue();
+                                        boolean acceso = false;
 
                                         if(tipoU == null || userN == null || password.isEmpty()){
                                                 Notification.show("Porfavor complete todos los campos");
@@ -161,15 +163,15 @@ public class IndexView extends VerticalLayout {
                                         }
 
                                         try {
-                                                boolean acceso = verificarCredenciales(tipoU,userN,password);
+                                                acceso = Procesos.Validacion(tipoU, userN, password);
 
                                                 if (acceso) {
                                                         if(tipoU.equals("Administrativo")){
-                                                        UI.getCurrent().navigate("administrativo");
+                                                        UI.getCurrent().navigate("menuAdministrativos");
                                                         }else if(tipoU.equals("Médico")){
-                                                                UI.getCurrent().navigate("medico");
+                                                                UI.getCurrent().navigate("menuMedicos");
                                                         }else if(tipoU.equals("Enfermero(a)")){
-                                                                UI.getCurrent().navigate("enfermero");
+                                                                UI.getCurrent().navigate("menuEnfermeros");
                                                         }
                                                 }else{
                                                         Notification.show("Datos incorrectos, intente nuevamente");
@@ -212,50 +214,4 @@ public class IndexView extends VerticalLayout {
                 }
         }
 
-        //Uso de IA para apayo en validación del archivo(Donde se utilizo se puso "(IA)")
-        public static boolean verificarCredenciales(String tipo, Double user, String passw) throws IOException{
-                File ubicaciónArchivo = null;
-                FileReader archivoLectura = null;
-                BufferedReader datosArchivo = null;
-                boolean credencialesValidas = false;    //(IA)
-                try {
-                        ubicaciónArchivo = new File("hospital\\src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\Usuarios.txt");    //Ubicar archivo
-                        archivoLectura = new FileReader(ubicaciónArchivo);                                                               //Abrir archivo
-                        datosArchivo = new BufferedReader(archivoLectura);                                                              //Cargar datos en memoria
-
-                        String linea = "";
-                        String[] datosSeparados = null;
-                        String datoTipo = "";
-                        String datoUser = "";
-                        String datoPassword = "";
-
-                        datosArchivo.readLine(); //Lee elencabezado, para no incluirlo en el ciclo
-                        while ((linea = datosArchivo.readLine()) != null) {
-                                if (linea.trim().isEmpty()) {
-                                        continue; //Vualve a hacer otra iteración
-                                }
-
-                                datosSeparados = linea.trim().split(";");      //Separa los datos en los ";"
-                                //Se omite la lectura de la primera columna debido a que no se utiliza en el inicio de sesión (Nombre)
-                                datoTipo = datosSeparados[1].trim();                  //Lee la columna 2 del archivo (Tipo de usuario)
-                                datoUser = datosSeparados[2].trim();                  //Lee la columna 3 del archivo (Usuario)
-                                datoPassword = datosSeparados[3].trim();              //Lee la columna 4 del archivo (Contraseña)
-
-                                //(IA)
-                                if (datoTipo.equalsIgnoreCase(tipo)
-                                        && datoUser.equals(String.valueOf(user.longValue()))
-                                        && datoPassword.equals(passw)
-                                ) {
-                                        credencialesValidas = true;
-                                        break;
-                                }
-                        }
-                        
-                } catch (Exception e) {
-                        e.printStackTrace();    //Da la linea exacta donde está el problema
-                }finally{
-                        datosArchivo.close();   //Cierra el archivo
-                }
-                return credencialesValidas;     //Retorna true o false para la verificación
-        }
 }

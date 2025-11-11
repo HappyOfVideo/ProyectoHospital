@@ -6,64 +6,68 @@ public class Procesos {
 
     // Globales
 
-    public static final String ARCHIVO = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\";
-    public static final String USUARIOS =  "Usuarios.txt";
+    public static final String RUTA = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\";
 
-    public static String Validacion() throws Exception{
+    public static Boolean Validacion(String tipo, Double user, String passw) throws Exception {
+
+        String archivoUsuarios = "Usuarios.txt";
+        File ubicaciónArchivo = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
 
         try {
-            String tipoMenu = "";
-            
+            ubicaciónArchivo = new File(RUTA + archivoUsuarios);
+            archivoLectura = new FileReader(ubicaciónArchivo);
+            datosArchivo = new BufferedReader(archivoLectura);
+
             String linea = "";
+            String[] datosSeparados = null;
+            String datoTipo = "";
+            String datoUser = "";
+            String datoPassw = "";
+            Boolean credencialesValidas = false;
 
-            String [] lineaVoluntarioSeparada = null;
+            datosArchivo.readLine();
+            while ((linea = datosArchivo.readLine()) != null) {
 
-            String idVoluntario = "";
-
-            String nombreVoluntario = "";
-
-            String proyectoRelacionados = "";
-
-            // Procesos
-
-            /*datosVoluntario.readLine(); // Lee la linea del encabezado
-
-            while ( (linea = datosVoluntario.readLine()) != null ) {
-                
-                if (linea.trim().isEmpty()){
+                if (linea.trim().isEmpty()) {
                     continue;
                 }
 
-                lineaVoluntarioSeparada = linea.trim().split(";");
+                datosSeparados = linea.trim().split(";"); // Separa los datos en los ";"
+                datoTipo = datosSeparados[1].trim(); // Lee la columna 2 del archivo (Tipo de usuario)
+                datoUser = datosSeparados[2].trim(); // Lee la columna 3 del archivo (Usuario)
+                datoPassw = datosSeparados[3].trim(); // Lee la columna 4 del archivo (Contraseña)
 
-                idVoluntario = lineaVoluntarioSeparada [ 0 ].trim();
+                if (datoTipo.equalsIgnoreCase(tipo)
+                        && datoUser.equals(String.valueOf(user.longValue()))
+                        && datoPassw.equals(passw)) {
+                    credencialesValidas = true;
+                    break;
+                }
 
-                nombreVoluntario = lineaVoluntarioSeparada [ 1 ].trim();
+            }
 
-                archivoEscritura = new FileWriter(RUTA_ARCHIVO_ESCRITURA + nombreVoluntario + ".txt");
+            return credencialesValidas;
 
-                escritura = new PrintWriter(archivoEscritura);
-
-                escritura.println(idVoluntario + " - " + nombreVoluntario + "\n\n");
-
-                proyectoRelacionados = buscarProyecto(idVoluntario);
-
-                escritura.println(proyectoRelacionados + "\n\n");
-
-                escritura.close();
-
-            }*/
-
-            return tipoMenu;
-
-        } //catch (IOException io) {
-
-            //throw new Exception("Error en la consulta de archivos" + io.getMessage());
-
-        //}
-        catch (Exception e) {
-
+        } catch (IOException io) {
+            throw new Exception("Error en la consulta de archivos" + io.getMessage());
+        } catch (Exception e) {
             throw new Exception("Error generico" + e.getMessage());
+        } finally {
+            datosArchivo.close();
+        }
+
+    }
+
+    public static void ListaPacientes(String nombre, String dI, String habitacion){
+
+        try {
+            
+            
+
+        } catch (Exception e) {
+            // TODO: handle exception
         }
 
     }

@@ -26,10 +26,11 @@ public class menuMedicosEnfermeros extends Div {
             mainLayout.setSpacing(false);
             mainLayout.setPadding(true);
             mainLayout.getStyle()
-                .set("background", "linear-gradient(135deg, #1C4C5D 0%, #1C4C5D 100%)")
+                .set("background", "linear-gradient(135deg, #1c4c5dff 0%, #1C4C5D 100%)")
                 .set("min-height", "100vh")
                 .set("margin", "0")
-                .set("font-family", "Arial, sans-serif");
+                .set("font-family", "Arial, sans-serif")
+            ;
 
             // Contenedor blanco para el contenido
             Div contentContainer = new Div();
@@ -40,16 +41,16 @@ public class menuMedicosEnfermeros extends Div {
                 .set("margin", "20px auto")
                 .set("margin-top", "180px")
                 .set("max-width", "900px")
-                .set("box-shadow", "0 10px 30px rgba(0,0,0,0.1)")
-                .set("position", "relative");
+                .set("box-shadow", "0 10px 30px #0000001a")
+                .set("position", "relative")
+            ;
 
            // HEADER CON TÍTULO Y BOTÓN DE REGRESAR
             HorizontalLayout headerLayout = new HorizontalLayout();
             headerLayout.setWidthFull();
             headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
             headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-            headerLayout.getStyle()
-                .set("margin-bottom", "20px");
+            headerLayout.getStyle().set("margin-bottom", "20px");
 
             // Título principal
             H1 mainTitle = new H1("Menú Medicos-Enfermeros");
@@ -58,7 +59,8 @@ public class menuMedicosEnfermeros extends Div {
                 .set("margin", "0")
                 .set("font-size", "2.5em")
                 .set("font-weight", "bold")
-                .set("text-shadow", "1px 1px 2px rgba(0,0,0,0.1)");
+                .set("text-shadow", "1px 1px 2px #0000001a")
+            ;
 
             // Botón de regresar
             Button backButton = new Button("Regresar", new Icon(VaadinIcon.ARROW_LEFT));
@@ -67,12 +69,13 @@ public class menuMedicosEnfermeros extends Div {
                 .set("margin", "0")
                 .set("font-weight", "bold")
                 .set("color", "#3498db")
-                .set("border", "1px solid #3498db");
+                .set("border", "1px solid #3498db")
+            ;
             
             // Acción del botón regresar - redirige a la página anterior o específica
             backButton.addClickListener(e -> {
                 // Redirige a la página anterior o a una específica
-                backButton.getUI().ifPresent(ui -> ui.navigate(""));
+                backButton.getUI().ifPresent(ui -> ui.navigate("")); //TODO 
             });
 
             headerLayout.add(mainTitle, backButton);
@@ -91,7 +94,8 @@ public class menuMedicosEnfermeros extends Div {
                 .set("margin-top", "0")
                 .set("margin-bottom", "30px")
                 .set("font-size", "1.5em")
-                .set("font-weight", "normal");
+                .set("font-weight", "normal")
+            ;
 
             // Layout horizontal para las barras de búsqueda
             HorizontalLayout searchLayout = new HorizontalLayout();
@@ -100,25 +104,13 @@ public class menuMedicosEnfermeros extends Div {
             searchLayout.setAlignItems(Alignment.CENTER);
 
             // Barra de búsqueda por Nombre
-            TextField searchByName = createSearchField(
-                "Buscar por nombre", 
-                VaadinIcon.USER, 
-                "Escriba el nombre completo del paciente"
-            );
+            TextField searchByName = createSearchField("Buscar por nombre", VaadinIcon.USER, "Escriba el nombre completo del paciente");
 
             // Barra de búsqueda por Documento
-            TextField searchByDocument = createSearchField(
-                "Buscar por documento", 
-                VaadinIcon.CREDIT_CARD, 
-                "Escriba el número de documento del paciente"
-            );
+            TextField searchByDocument = createSearchField("Buscar por documento", VaadinIcon.CREDIT_CARD, "Escriba el número de documento del paciente");
 
             // Barra de búsqueda por Habitación
-            TextField searchByRoom = createSearchField(
-                "Buscar por habitación", 
-                VaadinIcon.BED, 
-                "Escriba el número de habitación del paciente"
-            );
+            TextField searchByRoom = createSearchField("Buscar por habitación",VaadinIcon.BED,"Escriba el número de habitación del paciente");
 
             // Aplicar estilos básicos a los campos
             applyBasicFieldStyle(searchByName);
@@ -138,7 +130,8 @@ public class menuMedicosEnfermeros extends Div {
                 .set("background", "#f8f9fa")
                 .set("border-radius", "10px")
                 .set("margin-top", "30px")
-                .set("border-left", "4px solid #3498db");
+                .set("border-left", "4px solid #3498db")
+            ;
 
             // Texto de instrucciones
             Paragraph instructionText = new Paragraph(
@@ -150,7 +143,8 @@ public class menuMedicosEnfermeros extends Div {
                 .set("font-size", "1.1em")
                 .set("line-height", "1.6")
                 .set("margin", "0")
-                .set("text-align", "left");
+                .set("text-align", "left")
+            ;
 
 
             // CONSTRUCCIÓN FINAL
@@ -189,7 +183,8 @@ public class menuMedicosEnfermeros extends Div {
             .set("border-radius", "8px")
             .set("background", "#f8f9fa")
             .set("transition", "all 0.3s ease")
-            .set("padding", "8px");
+            .set("padding", "8px")
+        ;
         
         // Estilos para el input interno dentro del TextField
         field.getElement().executeJs(
