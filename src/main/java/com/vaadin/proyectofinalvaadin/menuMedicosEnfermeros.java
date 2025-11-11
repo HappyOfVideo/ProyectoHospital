@@ -72,7 +72,7 @@ public class menuMedicosEnfermeros extends Div {
             // Acción del botón regresar - redirige a la página anterior o específica
             backButton.addClickListener(e -> {
                 // Redirige a la página anterior o a una específica
-                backButton.getUI().ifPresent(ui -> ui.navigate("hospital\\src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\IndexView.java"));
+                backButton.getUI().ifPresent(ui -> ui.navigate(""));
             });
 
             headerLayout.add(mainTitle, backButton);
