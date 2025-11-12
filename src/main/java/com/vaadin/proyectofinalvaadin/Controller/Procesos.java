@@ -5,7 +5,6 @@ import java.io.*;
 public class Procesos {
 
     // Globales
-
     public static final String RUTA = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\";
 
     public static Boolean Validacion(String tipo, Double user, String passw) throws Exception {
@@ -34,22 +33,18 @@ public class Procesos {
                     continue;
                 }
 
-                datosSeparados = linea.trim().split(";"); // Separa los datos en los ";"
-                datoTipo = datosSeparados[1].trim(); // Lee la columna 2 del archivo (Tipo de usuario)
-                datoUser = datosSeparados[2].trim(); // Lee la columna 3 del archivo (Usuario)
-                datoPassw = datosSeparados[3].trim(); // Lee la columna 4 del archivo (Contraseña)
+                datosSeparados = linea.trim().split(";");         //Separa los datos en los ";"
+                datoTipo = datosSeparados[1].trim().toLowerCase();      //Lee la columna 2 del archivo (Tipo de usuario)
+                datoUser = datosSeparados[2].trim();                    //Lee la columna 3 del archivo (Usuario)
+                datoPassw = datosSeparados[3].trim();                   //Lee la columna 4 del archivo (Contraseña)
 
-                if (datoTipo.equalsIgnoreCase(tipo)
-                        && datoUser.equals(String.valueOf(user.longValue()))
-                        && datoPassw.equals(passw)) {
+                if (datoTipo.equalsIgnoreCase(tipo) && datoUser.equals(String.valueOf(user.longValue())) && datoPassw.equals("passw")) {
                     credencialesValidas = true;
                     break;
                 }
-
             }
 
             return credencialesValidas;
-
         } catch (IOException io) {
             throw new Exception("Error en la consulta de archivos" + io.getMessage());
         } catch (Exception e) {
@@ -57,11 +52,9 @@ public class Procesos {
         } finally {
             datosArchivo.close();
         }
-
     }
 
     public static void ListaPacientes(String nombre, String dI, String habitacion){
-
         try {
             
             

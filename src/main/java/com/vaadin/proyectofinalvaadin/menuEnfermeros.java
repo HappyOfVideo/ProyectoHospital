@@ -20,13 +20,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
-@Route("menuMedicos")
-public class menuMedicos extends VerticalLayout {
+@Route("menuEnfermeros")
+public class menuEnfermeros extends VerticalLayout {
 
     //Inicialización
     public static VerticalLayout divForm;
 
-    public menuMedicos() {
+    public menuEnfermeros() {
 
         setSizeFull();
         setPadding(false);
@@ -69,9 +69,10 @@ public class menuMedicos extends VerticalLayout {
                 .set("background", "white")
                 .set("border-radius", "15px")
                 .set("padding", "40px")
-                .set("margin-top", "160px")
+                .set("margin-top", "110px")
                 .set("max-width", "900px")
-            ;
+                .set("box-shadow", "0 10px 30px #0000001a")
+            ; 
 
            //Header - Titulo y cerrar sesión
             HorizontalLayout headerLayout = new HorizontalLayout();
@@ -81,7 +82,7 @@ public class menuMedicos extends VerticalLayout {
             headerLayout.getStyle().set("margin-bottom", "20px");
 
             //Título principal
-            H1 mainTitle = new H1("Menú Médicos");
+            H1 mainTitle = new H1("Menú Enfermeros");
             mainTitle.getStyle()
                 .set("color", "#2c3e50")
                 .set("margin", "0")
@@ -96,14 +97,9 @@ public class menuMedicos extends VerticalLayout {
             SubMenu subMenu = menu.getSubMenu();
             subMenu.addItem("AQUÍ"/*TODO: Aqui sale el nombre de la persona que inicio sesión*/).setEnabled(false); 
             subMenu.addItem("⏻ Cerrar sesión").getStyle().set("color", "#ff0000ff");
-            menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px");
+            menuBar.getStyle().set("font-weight", "bold");
 
             headerLayout.add(mainTitle, menuBar);
-
-            //Efecto hover
-            menuBar.getElement().getStyle().set("transition", "background-color 0.3s ease");
-            menuBar.getElement().addEventListener("mouseover", e -> menuBar.getStyle().set("background-color", "#e0e0e0"));
-            menuBar.getElement().addEventListener("mouseout", e -> menuBar.getStyle().set("background-color", "#f0f0f0"));
 
             //Sección de busqueda
             VerticalLayout seccionBusquedas = new VerticalLayout();

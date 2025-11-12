@@ -2,9 +2,9 @@ Nombre;Tipo usuario;usuario;contraseña
 Jeronimo Toro;Administrativo;1027283418;passw
 Diego Rios;Administrativo;1026398734;passw
 Miguel Arbelaez;Administrativo;1021924868;passw
-Alejandro Rodriguez;Medico;1392384123;passw
-Andrea Gonzales;Medico;1017234567;passw
-Sara Perez;Medico;1656921567;passw
-Samuel Hernandez;Enfermero;1027931823;passw
-Bryan Valencia;Enfermero;1029187625;passw
-Sebastian Gomez;Enfermero;1029344856;passw
+Alejandro Rodriguez;Médico;1392384123;passw
+Andrea Gonzales;Médico;1017234567;passw
+Sara Perez;Médico;1656921567;passw
+Samuel Hernandez;Enfermero(a);1027931823;passw
+Bryan Valencia;Enfermero(a);1029187625;passw
+Sebastian Gomez;Enfermero(a);1029344856;passw
