@@ -1,6 +1,7 @@
 package com.vaadin.proyectofinalvaadin;
 
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -69,7 +70,7 @@ public class menuMedicos extends VerticalLayout {
                 .set("background", "white")
                 .set("border-radius", "15px")
                 .set("padding", "40px")
-                .set("margin-top", "160px")
+                .set("margin-top", "110px")
                 .set("max-width", "900px")
             ;
 
@@ -95,7 +96,9 @@ public class menuMedicos extends VerticalLayout {
             MenuItem menu = menuBar.addItem("☰");
             SubMenu subMenu = menu.getSubMenu();
             subMenu.addItem("AQUÍ"/*TODO: Aqui sale el nombre de la persona que inicio sesión*/).setEnabled(false); 
-            subMenu.addItem("⏻ Cerrar sesión").getStyle().set("color", "#ff0000ff");
+            subMenu.addItem("⏻ Cerrar sesión", e -> {
+                UI.getCurrent().navigate("");
+            }).getStyle().set("color", "#ff0000ff");
             menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px");
 
             headerLayout.add(mainTitle, menuBar);

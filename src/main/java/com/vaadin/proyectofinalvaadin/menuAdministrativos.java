@@ -17,13 +17,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route("menuAdmnistrativos")
-public class menuAdmnistrativos extends VerticalLayout {
+@Route("menuAdministrativos")
+public class menuAdministrativos extends VerticalLayout {
 
     // Inicialización
     public static VerticalLayout divForm;
 
-    public menuAdmnistrativos() {
+    public menuAdministrativos() {
 
         setSizeFull();
         setPadding(false);
@@ -93,9 +93,11 @@ public class menuAdmnistrativos extends VerticalLayout {
             MenuItem menu = menuBar.addItem("☰");
             SubMenu subMenu = menu.getSubMenu();
             subMenu.addItem("AQUÍ"/*TODO: Aqui sale el nombre de la persona que inicio sesión*/).setEnabled(false); 
-            subMenu.addItem("⏻ Cerrar sesión").getStyle().set("color", "#ff0000ff");
+            subMenu.addItem("⏻ Cerrar sesión", e -> {
+                UI.getCurrent().navigate("");
+            }).getStyle().set("color", "#ff0000ff");
             menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px");
-
+            
             headerLayout.add(mainTitle, menuBar);
 
             //Efecto hover
