@@ -1,6 +1,5 @@
 package com.vaadin.proyectofinalvaadin;
 
-import com.vaadin.proyectofinalvaadin.Controller.Procesos; // Poder hacer uso de las funciones que estan dentro de Procesos.java
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -18,13 +17,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route("menuAdministrativos")
-public class menuAdministrativos extends VerticalLayout {
+@Route("administrativoRegistPacien")
+public class administrativoRegistPacien extends VerticalLayout {  //ESTA PESTAÑA SE DERIVA DE menuAdministrativos
 
-    // Inicialización
     public static VerticalLayout divForm;
 
-    public menuAdministrativos() {
+    public administrativoRegistPacien() {
 
         setSizeFull();
         setPadding(false);
@@ -40,8 +38,7 @@ public class menuAdministrativos extends VerticalLayout {
             .set("background", "linear-gradient(135deg, #1C4C5D 0%, #1C4C5D 100%)")
             .set("min-height", "100vh")
             .set("font-family", "Arial, sans-serif")
-            .set("padding-left", "370px")
-        ;
+            .set("padding-left", "370px");
 
         // hero layout
         FormLayout hero = new FormLayout();
@@ -55,79 +52,93 @@ public class menuAdministrativos extends VerticalLayout {
         mainLayout.setAlignItems(Alignment.CENTER);
 
         add(mainLayout);
-
     }
 
-    //Construir hero, agregara los componentes del encabezado inicial de la pagina
+    // Construir hero
     public void construirHero(FormLayout hero) {
         try {
-
-            //Contenedor blanco para el contenido
+            // Contenedor blanco
             Div contenedor = new Div();
             contenedor.getStyle()
                 .set("background", "white")
                 .set("border-radius", "20px")
                 .set("padding", "50px")
                 .set("max-width", "700px")
-                .set("text-align", "center")
-            ;
+                .set("text-align", "center");
 
-            //Header - Titulo y cerrar sesión
+            // Header layout
             HorizontalLayout headerLayout = new HorizontalLayout();
             headerLayout.setWidthFull();
             headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
             headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
             headerLayout.getStyle().set("margin-bottom", "40px");
 
-            //Título principal
-            H1 mainTitle = new H1("Menú Administrativo");
+            // Título principal
+            H1 mainTitle = new H1("Bienvenido");
             mainTitle.getStyle()
                 .set("color", "#2c3e50")
                 .set("margin", "0")
                 .set("font-size", "40px")
                 .set("font-weight", "bold")
-                .set("text-shadow", "1px 1px 2px #0000001a")
-            ;
+                .set("text-shadow", "1px 1px 2px #0000001a");
 
-            //Botón de cerrar sesion
+            // Layout derecho con los botones
+            HorizontalLayout rightButtons = new HorizontalLayout();
+            rightButtons.setSpacing(true);
+            rightButtons.setAlignItems(Alignment.CENTER);
+
+            // Botón "Regresar"
+            Button btnRegresar = new Button("Regresar", new Icon(VaadinIcon.ARROW_LEFT));
+            btnRegresar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+            btnRegresar.getStyle()
+                .set("background", "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)")
+                .set("color", "white")
+                .set("font-weight", "bold")
+                .set("border-radius", "10px")
+                .set("box-shadow", "0 3px 10px #c0392b4d")
+                .set("transition", "all 0.3s ease");
+            btnRegresar.addClickListener(e -> UI.getCurrent().navigate("menuAdministrativos"));
+
+            // Menú de cerrar sesión
             MenuBar menuBar = new MenuBar();
             MenuItem menu = menuBar.addItem("☰");
             SubMenu subMenu = menu.getSubMenu();
-            subMenu.addItem(Procesos.userActual()).setEnabled(false); 
+            subMenu.addItem("Usuario actual").setEnabled(false);
             subMenu.addItem("⏻ Cerrar sesión", e -> {
-                UI.getCurrent().navigate("");
+                UI.getCurrent().navigate(""); // TODO: ruta a login 
             }).getStyle().set("color", "#ff0000ff");
-            menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px");
-            
-            headerLayout.add(mainTitle, menuBar);
+            menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px"); //TO DO
 
-            //Efecto hover
+            // Efecto hover
             menuBar.getElement().getStyle().set("transition", "background-color 0.3s ease");
             menuBar.getElement().addEventListener("mouseover", e -> menuBar.getStyle().set("background-color", "#e0e0e0"));
             menuBar.getElement().addEventListener("mouseout", e -> menuBar.getStyle().set("background-color", "#f0f0f0"));
 
-            //Subtítulo
-            H2 subtitle = new H2("¿Qué deseas hacer el día de hoy?");
+            rightButtons.add(btnRegresar, menuBar);
+
+            headerLayout.add(mainTitle, rightButtons);
+
+            // Subtítulo
+            H2 subtitle = new H2("Selecciona el tipo de habitación");
             subtitle.getStyle()
                 .set("color", "#34495e")
                 .set("margin-top", "0")
                 .set("margin-bottom", "40px")
                 .set("font-size", "1.8em")
                 .set("font-weight", "normal")
-                .set("font-style", "italic")
-            ;
+                .set("font-style", "italic");
 
-            //Contenedor para los botones
+            // Contenedor de botones
             VerticalLayout buttonsContainer = new VerticalLayout();
             buttonsContainer.setWidth("100%");
             buttonsContainer.setSpacing(true);
             buttonsContainer.setPadding(false);
             buttonsContainer.setAlignItems(Alignment.CENTER);
 
-            //Botón 1 --> Registrar paciente
-            Button registrar = new Button("Registrar paciente", new Icon(VaadinIcon.USER_CARD));
-            registrar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
-            registrar.getStyle()
+            // Botón 1 → Habitación Tipo A
+            Button habitacionA = new Button("Habitación Tipo A (Individual)", new Icon(VaadinIcon.HOME_O));
+            habitacionA.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
+            habitacionA.getStyle()
                 .set("width", "350px")
                 .set("height", "60px")
                 .set("font-size", "1.2em")
@@ -138,15 +149,13 @@ public class menuAdministrativos extends VerticalLayout {
                 .set("color", "white")
                 .set("border", "none")
                 .set("box-shadow", "0 4px 15px #3498db4d")
-                .set("transition", "all 0.3s ease")
-            ;
+                .set("transition", "all 0.3s ease");
+            habitacionA.addClickListener(e -> UI.getCurrent().navigate("administrativoRegistPacienHabitacionA"));
 
-            registrar.addClickListener(e -> UI.getCurrent().navigate("administrativoRegistPacien")); 
-
-            //Botón 2 --> Imprimir factura
-            Button facturar = new Button("Imprimir factura de un paciente", new Icon(VaadinIcon.PRINT));
-            facturar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
-            facturar.getStyle()
+            // Botón 2 → Habitación Tipo B
+            Button habitacionB = new Button("Habitación Tipo B (2 camas)", new Icon(VaadinIcon.HOME));
+            habitacionB.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
+            habitacionB.getStyle()
                 .set("width", "350px")
                 .set("height", "60px")
                 .set("font-size", "1.2em")
@@ -157,12 +166,10 @@ public class menuAdministrativos extends VerticalLayout {
                 .set("color", "white")
                 .set("border", "none")
                 .set("box-shadow", "0 4px 15px #27ae604d")
-                .set("transition", "all 0.3s ease")
-            ;
+                .set("transition", "all 0.3s ease");
+            habitacionB.addClickListener(e -> UI.getCurrent().navigate(""/* TODO: ruta de habitación tipo B */));
 
-            facturar.addClickListener(e -> UI.getCurrent().navigate(""/*TODO: A donde va*/));
-
-            //Pie de página
+            // Pie de página
             Div footer = new Div();
             footer.getStyle()
                 .set("margin-top", "40px")
@@ -176,19 +183,17 @@ public class menuAdministrativos extends VerticalLayout {
                 .set("font-size", "2em")
                 .set("font-weight", "bold")
                 .set("letter-spacing", "2px")
-                .set("text-shadow", "1px 1px 3px #0000001a")
-            ;
+                .set("text-shadow", "1px 1px 3px #0000001a");
 
-            //Construcción final
-            buttonsContainer.add(registrar, facturar);
+            // Construcción final
+            buttonsContainer.add(habitacionA, habitacionB);
             footer.add(hospital);
             contenedor.add(headerLayout, subtitle, buttonsContainer, footer);
             hero.add(contenedor);
+
         } catch (Exception e) {
-            String error = e.getMessage();
-            System.err.println("Error en construirHero: " + error);
+            System.err.println("Error en construirHero: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
 }

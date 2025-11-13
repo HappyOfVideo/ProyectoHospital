@@ -20,6 +20,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.proyectofinalvaadin.Controller.Procesos; // Poder hacer uso de las funciones que estan dentro de Procesos.java
 
 @Route("menuMedicos")
 public class menuMedicos extends VerticalLayout {
@@ -91,11 +92,13 @@ public class menuMedicos extends VerticalLayout {
                 .set("text-shadow", "1px 1px 2px #0000001a")
             ;
 
+            
+
             //Botón de cerrar sesion
             MenuBar menuBar = new MenuBar();
             MenuItem menu = menuBar.addItem("☰");
             SubMenu subMenu = menu.getSubMenu();
-            subMenu.addItem("AQUÍ"/*TODO: Aqui sale el nombre de la persona que inicio sesión*/).setEnabled(false); 
+            subMenu.addItem(Procesos.userActual()).setEnabled(false); 
             subMenu.addItem("⏻ Cerrar sesión", e -> {
                 UI.getCurrent().navigate("");
             }).getStyle().set("color", "#ff0000ff");

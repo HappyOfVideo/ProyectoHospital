@@ -2,7 +2,7 @@ package com.vaadin.proyectofinalvaadin;
 
 import java.io.IOException;
 
-import com.vaadin.proyectofinalvaadin.Controller.Procesos;
+import com.vaadin.proyectofinalvaadin.Controller.Procesos; // Poder hacer uso de las funciones que estan dentro de Procesos.java
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -158,7 +158,8 @@ public class IndexView extends VerticalLayout {
                                         }
 
                                         try {
-                                                boolean acceso = Procesos.Validacion(tipoU, userN, password);
+                                                boolean acceso = Procesos.Validacion(tipoU, userN, password); // Invocar la funcion de Procesos.java 
+                                                String nombreUser = Procesos.separarUser(userN);
 
                                                 if (acceso) {
                                                         if (tipoU.equals("Administrativo")) {
