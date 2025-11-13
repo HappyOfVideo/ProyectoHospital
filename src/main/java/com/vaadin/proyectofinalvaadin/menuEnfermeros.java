@@ -95,7 +95,7 @@ public class menuEnfermeros extends VerticalLayout {
 
             //Botón de cerrar sesion
             MenuBar menuBar = new MenuBar();
-            MenuItem menu = menuBar.addItem("☰");
+            MenuItem menu = menuBar.addItem(new Icon(VaadinIcon.USER));
             SubMenu subMenu = menu.getSubMenu();
             subMenu.addItem(Procesos.userActual()).setEnabled(false); 
             subMenu.addItem("⏻ Cerrar sesión", e -> {

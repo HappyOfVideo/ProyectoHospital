@@ -3,26 +3,23 @@ package com.vaadin.proyectofinalvaadin;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route("administrativoRegistPacien")
-public class administrativoRegistPacien extends VerticalLayout {  //ESTA PESTAÑA SE DERIVA DE menuAdministrativos
+@Route("registrar")
+public class registrarPaciente extends VerticalLayout {
 
     public static VerticalLayout divForm;
 
-    public administrativoRegistPacien() {
+    public registrarPaciente() {
 
         setSizeFull();
         setPadding(false);
@@ -99,22 +96,7 @@ public class administrativoRegistPacien extends VerticalLayout {  //ESTA PESTAÑ
                 .set("transition", "all 0.3s ease");
             btnRegresar.addClickListener(e -> UI.getCurrent().navigate("menuAdministrativos"));
 
-            // Menú de cerrar sesión
-            MenuBar menuBar = new MenuBar();
-            MenuItem menu = menuBar.addItem("☰");
-            SubMenu subMenu = menu.getSubMenu();
-            subMenu.addItem("Usuario actual").setEnabled(false);
-            subMenu.addItem("⏻ Cerrar sesión", e -> {
-                UI.getCurrent().navigate(""); // TODO: ruta a login 
-            }).getStyle().set("color", "#ff0000ff");
-            menuBar.getStyle().set("font-weight", "bold").set("border-radius", "20px"); //TO DO
-
-            // Efecto hover
-            menuBar.getElement().getStyle().set("transition", "background-color 0.3s ease");
-            menuBar.getElement().addEventListener("mouseover", e -> menuBar.getStyle().set("background-color", "#e0e0e0"));
-            menuBar.getElement().addEventListener("mouseout", e -> menuBar.getStyle().set("background-color", "#f0f0f0"));
-
-            rightButtons.add(btnRegresar, menuBar);
+            rightButtons.add(btnRegresar);
 
             headerLayout.add(mainTitle, rightButtons);
 
@@ -150,7 +132,7 @@ public class administrativoRegistPacien extends VerticalLayout {  //ESTA PESTAÑ
                 .set("border", "none")
                 .set("box-shadow", "0 4px 15px #3498db4d")
                 .set("transition", "all 0.3s ease");
-            habitacionA.addClickListener(e -> UI.getCurrent().navigate("administrativoRegistPacienHabitacionA"));
+            habitacionA.addClickListener(e -> UI.getCurrent().navigate("registrar/TipoA"));
 
             // Botón 2 → Habitación Tipo B
             Button habitacionB = new Button("Habitación Tipo B (2 camas)", new Icon(VaadinIcon.HOME));
@@ -167,7 +149,7 @@ public class administrativoRegistPacien extends VerticalLayout {  //ESTA PESTAÑ
                 .set("border", "none")
                 .set("box-shadow", "0 4px 15px #27ae604d")
                 .set("transition", "all 0.3s ease");
-            habitacionB.addClickListener(e -> UI.getCurrent().navigate(""/* TODO: ruta de habitación tipo B */));
+            habitacionB.addClickListener(e -> UI.getCurrent().navigate("registrar/TipoB"));
 
             // Pie de página
             Div footer = new Div();

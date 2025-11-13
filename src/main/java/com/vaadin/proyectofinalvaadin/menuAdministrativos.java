@@ -91,7 +91,7 @@ public class menuAdministrativos extends VerticalLayout {
 
             //Botón de cerrar sesion
             MenuBar menuBar = new MenuBar();
-            MenuItem menu = menuBar.addItem("☰");
+            MenuItem menu = menuBar.addItem(new Icon(VaadinIcon.USER));
             SubMenu subMenu = menu.getSubMenu();
             subMenu.addItem(Procesos.userActual()).setEnabled(false); 
             subMenu.addItem("⏻ Cerrar sesión", e -> {
@@ -141,7 +141,7 @@ public class menuAdministrativos extends VerticalLayout {
                 .set("transition", "all 0.3s ease")
             ;
 
-            registrar.addClickListener(e -> UI.getCurrent().navigate("administrativoRegistPacien")); 
+            registrar.addClickListener(e -> UI.getCurrent().navigate("registrar")); 
 
             //Botón 2 --> Imprimir factura
             Button facturar = new Button("Imprimir factura de un paciente", new Icon(VaadinIcon.PRINT));
