@@ -32,16 +32,15 @@ public class registrarPaciente extends VerticalLayout {
         mainLayout.setSpacing(false);
         mainLayout.setPadding(false);
         mainLayout.getStyle()
-            .set("background", "linear-gradient(135deg, #1C4C5D 0%, #1C4C5D 100%)")
-            .set("min-height", "100vh")
-            .set("font-family", "Arial, sans-serif")
-            .set("padding-left", "370px");
+                .set("background", "linear-gradient(135deg, #1C4C5D 0%, #1C4C5D 100%)")
+                .set("min-height", "100vh")
+                .set("font-family", "Arial, sans-serif")
+                .set("padding-left", "370px");
 
         // hero layout
         FormLayout hero = new FormLayout();
         hero.setResponsiveSteps(
-            new FormLayout.ResponsiveStep("0", 1)
-        );
+                new FormLayout.ResponsiveStep("0", 1));
         construirHero(hero);
 
         mainLayout.add(hero);
@@ -57,11 +56,11 @@ public class registrarPaciente extends VerticalLayout {
             // Contenedor blanco
             Div contenedor = new Div();
             contenedor.getStyle()
-                .set("background", "white")
-                .set("border-radius", "20px")
-                .set("padding", "50px")
-                .set("max-width", "700px")
-                .set("text-align", "center");
+                    .set("background", "white")
+                    .set("border-radius", "20px")
+                    .set("padding", "50px")
+                    .set("max-width", "700px")
+                    .set("text-align", "center");
 
             // Header layout
             HorizontalLayout headerLayout = new HorizontalLayout();
@@ -73,11 +72,11 @@ public class registrarPaciente extends VerticalLayout {
             // Título principal
             H1 mainTitle = new H1("Bienvenido");
             mainTitle.getStyle()
-                .set("color", "#2c3e50")
-                .set("margin", "0")
-                .set("font-size", "40px")
-                .set("font-weight", "bold")
-                .set("text-shadow", "1px 1px 2px #0000001a");
+                    .set("color", "#2c3e50")
+                    .set("margin", "0")
+                    .set("font-size", "40px")
+                    .set("font-weight", "bold")
+                    .set("text-shadow", "1px 1px 2px #0000001a");
 
             // Layout derecho con los botones
             HorizontalLayout rightButtons = new HorizontalLayout();
@@ -88,12 +87,12 @@ public class registrarPaciente extends VerticalLayout {
             Button btnRegresar = new Button("Regresar", new Icon(VaadinIcon.ARROW_LEFT));
             btnRegresar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
             btnRegresar.getStyle()
-                .set("background", "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)")
-                .set("color", "white")
-                .set("font-weight", "bold")
-                .set("border-radius", "10px")
-                .set("box-shadow", "0 3px 10px #c0392b4d")
-                .set("transition", "all 0.3s ease");
+                    .set("background", "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)")
+                    .set("color", "white")
+                    .set("font-weight", "bold")
+                    .set("border-radius", "10px")
+                    .set("box-shadow", "0 3px 10px #c0392b4d")
+                    .set("transition", "all 0.3s ease");
             btnRegresar.addClickListener(e -> UI.getCurrent().navigate("menuAdministrativos"));
 
             rightButtons.add(btnRegresar);
@@ -103,12 +102,12 @@ public class registrarPaciente extends VerticalLayout {
             // Subtítulo
             H2 subtitle = new H2("Selecciona el tipo de habitación");
             subtitle.getStyle()
-                .set("color", "#34495e")
-                .set("margin-top", "0")
-                .set("margin-bottom", "40px")
-                .set("font-size", "1.8em")
-                .set("font-weight", "normal")
-                .set("font-style", "italic");
+                    .set("color", "#34495e")
+                    .set("margin-top", "0")
+                    .set("margin-bottom", "40px")
+                    .set("font-size", "1.8em")
+                    .set("font-weight", "normal")
+                    .set("font-style", "italic");
 
             // Contenedor de botones
             VerticalLayout buttonsContainer = new VerticalLayout();
@@ -121,51 +120,51 @@ public class registrarPaciente extends VerticalLayout {
             Button habitacionA = new Button("Habitación Tipo A (Individual)", new Icon(VaadinIcon.HOME_O));
             habitacionA.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
             habitacionA.getStyle()
-                .set("width", "350px")
-                .set("height", "60px")
-                .set("font-size", "1.2em")
-                .set("font-weight", "bold")
-                .set("margin", "10px 0")
-                .set("border-radius", "12px")
-                .set("background", "linear-gradient(135deg, #3498db 0%, #2980b9 100%)")
-                .set("color", "white")
-                .set("border", "none")
-                .set("box-shadow", "0 4px 15px #3498db4d")
-                .set("transition", "all 0.3s ease");
+                    .set("width", "350px")
+                    .set("height", "60px")
+                    .set("font-size", "1.2em")
+                    .set("font-weight", "bold")
+                    .set("margin", "10px 0")
+                    .set("border-radius", "12px")
+                    .set("background", "linear-gradient(135deg, #3498db 0%, #2980b9 100%)")
+                    .set("color", "white")
+                    .set("border", "none")
+                    .set("box-shadow", "0 4px 15px #3498db4d")
+                    .set("transition", "all 0.3s ease");
             habitacionA.addClickListener(e -> UI.getCurrent().navigate("registrar/TipoA"));
 
             // Botón 2 → Habitación Tipo B
             Button habitacionB = new Button("Habitación Tipo B (2 camas)", new Icon(VaadinIcon.HOME));
             habitacionB.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
             habitacionB.getStyle()
-                .set("width", "350px")
-                .set("height", "60px")
-                .set("font-size", "1.2em")
-                .set("font-weight", "bold")
-                .set("margin", "10px 0")
-                .set("border-radius", "12px")
-                .set("background", "linear-gradient(135deg, #27ae60 0%, #229954 100%)")
-                .set("color", "white")
-                .set("border", "none")
-                .set("box-shadow", "0 4px 15px #27ae604d")
-                .set("transition", "all 0.3s ease");
+                    .set("width", "350px")
+                    .set("height", "60px")
+                    .set("font-size", "1.2em")
+                    .set("font-weight", "bold")
+                    .set("margin", "10px 0")
+                    .set("border-radius", "12px")
+                    .set("background", "linear-gradient(135deg, #27ae60 0%, #229954 100%)")
+                    .set("color", "white")
+                    .set("border", "none")
+                    .set("box-shadow", "0 4px 15px #27ae604d")
+                    .set("transition", "all 0.3s ease");
             habitacionB.addClickListener(e -> UI.getCurrent().navigate("registrar/TipoB"));
 
             // Pie de página
             Div footer = new Div();
             footer.getStyle()
-                .set("margin-top", "40px")
-                .set("padding-top", "40px")
-                .set("border-top", "2px solid #ecf0f1")
-                .set("text-align", "center");
+                    .set("margin-top", "40px")
+                    .set("padding-top", "40px")
+                    .set("border-top", "2px solid #ecf0f1")
+                    .set("text-align", "center");
 
             H2 hospital = new H2("HOSPITAL MONTELÍBANO");
             hospital.getStyle()
-                .set("color", "#2c3e50")
-                .set("font-size", "2em")
-                .set("font-weight", "bold")
-                .set("letter-spacing", "2px")
-                .set("text-shadow", "1px 1px 3px #0000001a");
+                    .set("color", "#2c3e50")
+                    .set("font-size", "2em")
+                    .set("font-weight", "bold")
+                    .set("letter-spacing", "2px")
+                    .set("text-shadow", "1px 1px 3px #0000001a");
 
             // Construcción final
             buttonsContainer.add(habitacionA, habitacionB);

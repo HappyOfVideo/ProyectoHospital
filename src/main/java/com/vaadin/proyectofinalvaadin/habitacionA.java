@@ -135,7 +135,10 @@ public class habitacionA extends VerticalLayout {
                         for (int i = 1; i < 11; i++) {
                                 String nombreHabitacion = "A" + i; // Variable creada dentro de ciclo para poder que
                                                                    // cada boton recuerde su número
-                                boolean estaLibre = Procesos.estadoHabitacionA(nombreHabitacion); // Funcion exportada de procesos, para analizar si esta libre o no
+                                boolean estaLibre = Procesos.estadoHabitacionA(nombreHabitacion); // Funcion exportada
+                                                                                                  // de procesos, para
+                                                                                                  // analizar si esta
+                                                                                                  // libre o no
                                 Icon bedIcon = new Icon(VaadinIcon.BED);
                                 bedIcon.setSize("40px");
 
@@ -153,8 +156,7 @@ public class habitacionA extends VerticalLayout {
                                                 .set("box-shadow", "0 3px 10px rgba(0,0,0,0.1)")
                                                 .set("transition", "all 0.3s ease")
                                                 .set("margin-bottom", "20px")
-                                                .set("transition", "background-color 1s ease")
-                                        ;
+                                                .set("transition", "background-color 1s ease");
 
                                 contenedorHabitaciones.add(habitacion);
                                 gridHabitaciones.add(habitacion);
@@ -165,8 +167,14 @@ public class habitacionA extends VerticalLayout {
                                                 detalles.setVisible(true);
                                         } else {
                                                 habitacion.getElement().executeJs(
-                                                        "this.style.backgroundColor = '#fd9999ff';" + // color temporal
-                                                        "setTimeout(() => this.style.backgroundColor = '#ecf0f1', 1500);" // vuelve al original en 1.5 seg
+                                                                "this.style.backgroundColor = '#fd9999ff';" + // color
+                                                                                                              // temporal
+                                                                                "setTimeout(() => this.style.backgroundColor = '#ecf0f1', 1500);" // vuelve
+                                                                                                                                                  // al
+                                                                                                                                                  // original
+                                                                                                                                                  // en
+                                                                                                                                                  // 1.5
+                                                                                                                                                  // seg
                                                 );
                                                 habitacion.setEnabled(false);
                                                 Notification.show("Hábitación ocupada");
@@ -220,7 +228,7 @@ public class habitacionA extends VerticalLayout {
                                 } else {
                                         gridHabitaciones.setVisible(true);
                                         detalles.setVisible(false);
-                                        
+
                                         String[] habitacion = (tituloDetalles.getText()).split(" ");
                                         String nHabitacion = "";
                                         nHabitacion = habitacion[1];

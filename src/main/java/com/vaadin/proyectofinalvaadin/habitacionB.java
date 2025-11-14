@@ -162,7 +162,7 @@ public class habitacionB extends VerticalLayout {
                                 bedIcon.setSize("40px");
 
                                 Button habitacion = new Button("HABITACIÓN B" + i, bedIcon);
-                                // int num = i;
+
                                 habitacion.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                                 habitacion.getStyle()
                                                 .set("width", "150px")
@@ -242,15 +242,30 @@ public class habitacionB extends VerticalLayout {
                                 agregar.addClickListener(e -> {
                                         String dp = String.valueOf(documentoPaciente.getValue());
                                         if (dp == null || nombrePaciente.getValue().equals("")) {
-                                                Notification.show("Los campos no pueden estar vacío");
+                                                Notification.show("Los campos no pueden estar vacío"); // Si algún campo
+                                                                                                       // está vacío se
+                                                                                                       // muestra una
+                                                                                                       // notificación y
+                                                                                                       // se detiene la
+                                                                                                       // ejecución.
                                                 return;
                                         } else if (!dp.matches("\\d*") && (nombrePaciente.getValue()).matches(REGEX)) {
-                                                Notification.show("No se permiten tildes ni caracteres especiales");
-                                                return;
+                                                Notification.show("No se permiten tildes ni caracteres especiales"); // dp.matches("\\d*")
+                                                                                                                     // →
+                                                                                                                     // el
+                                                                                                                     // documento
+                                                                                                                     // debe
+                                                                                                                     // contener
+                                                                                                                     // solo
+                                                                                                                     // números
+                                                return; // REGEX valida que el nombre no tenga caracteres inválidos
+                                                        // (tildes, ñ, símbolos)
                                         } else {
                                                 gridHabitaciones.setVisible(true);
                                                 detalles.setVisible(false);
-                                                detallesIZ.setVisible(false);
+                                                detallesIZ.setVisible(false); // Esto vuelve a mostrar el grid donde
+                                                                              // están las habitaciones, ocultando el
+                                                                              // panel de edición.
 
                                                 String[] habitacion = (tituloDetalles.getText()).split(" ");
                                                 String nHabitacion = "";
@@ -260,10 +275,27 @@ public class habitacionB extends VerticalLayout {
 
                                                 try {
                                                         Procesos.registroPacientesHabitacionesB(
-                                                                        nombrePaciente.getValue(), dp, nHabitacion,
-                                                                        nCama);
-                                                        Notification.show(nCama + " - " + " de " + nHabitacion
-                                                                        + " ocupada correctamente");
+                                                                        nombrePaciente.getValue(), dp, nHabitacion, // Este
+                                                                                                                    // método
+                                                                                                                    // es
+                                                                                                                    // el
+                                                                                                                    // que
+                                                                                                                    // actualiza
+                                                                                                                    // la
+                                                                                                                    // información
+                                                                                                                    // interna:
+                                                                        nCama); // Marca la cama como ocupada
+                                                        Notification.show(nCama + " - " + " de " + nHabitacion // Asocia
+                                                                                                               // el
+                                                                                                               // paciente
+                                                                                                               // con
+                                                                                                               // esa
+                                                                                                               // cama
+                                                                        + " ocupada correctamente"); // Lanza errores si
+                                                                                                     // la cama ya está
+                                                                                                     // ocupada o el
+                                                                                                     // paciente ya
+                                                                                                     // existe
                                                         nombrePaciente.setEnabled(false);
                                                         documentoPaciente.setEnabled(false);
                                                         salir.setEnabled(false);
@@ -271,7 +303,6 @@ public class habitacionB extends VerticalLayout {
                                                         return;
                                                 } catch (Exception E) {
                                                         Notification.show("Paciente ya registrado y/o cama ya ocupada");
-
                                                 }
 
                                                 nombrePaciente.clear();

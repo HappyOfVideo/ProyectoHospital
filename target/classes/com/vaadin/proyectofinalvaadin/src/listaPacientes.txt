@@ -1,8 +1,10 @@
 nombre;id;habitacion
 null;null;null
 Juan Paella;1043115530;A4
-Miguel Argaez;12893731;A10
-Carlos Higuita;18122171;B1 - C1
 Eladio Carrion;88818171;B1 - C2
 Jeronimo Valdemir;182127112;B2 - C1
 Samuel Castañeda;19828123;B20 - C2
+Joe Donh;15647802;A1
+Carlos Rodriguez;34541717;A3
+Juan Uribe;12341487;B1 - C1
+James Rodriguez;1010101010;B2 - C2

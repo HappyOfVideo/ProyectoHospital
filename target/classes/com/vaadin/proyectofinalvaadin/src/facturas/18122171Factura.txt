@@ -1,0 +1,16 @@
+
+
+//////////////////////////- FACTURA -//////////////////////////
+
+
+Fecha y hora: 2025-11-14T14:56:27.330989900
+
+
+El usuario: Carlos Higuita se ha hospedado [ 16 ] día(s) en el hospital
+
+
+El total de pago es: $2800000
+
+
+//////////////////////////- BUEN DÍA -//////////////////////////
+

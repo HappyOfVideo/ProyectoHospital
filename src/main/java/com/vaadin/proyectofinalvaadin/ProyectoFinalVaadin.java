@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProyectoFinalVaadin {
 
     public static void main(String[] args) {
-       
+
         SpringApplication.run(ProyectoFinalVaadin.class, args);
-        
+
     }
 }

@@ -12,8 +12,11 @@ public class Procesos {
                                                                                                   // archivos
     public static final String RUTA_CARPETA_PACIENTES = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\pacientes\\";
     public static final String RUTA_CARPETA_FACTURA = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\facturas\\";
+    public static final String RUTA_CARPETA_INDICACIONES = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\Indicaciones\\";
 
-    public static String nombreUsuarioActual = "";
+    public static String NOMBRE_USER_ACTUAL = "";
+    public static String NOMBRE_PACIENTE_ACTUAL = "";
+    public static String ID_PACIENTE = "";
 
     public static Boolean Validacion(String tipo, Double user, String passw) throws Exception {
 
@@ -108,12 +111,12 @@ public class Procesos {
                 datoUser = datosSeparados[2].trim(); // Lee la columna 3 del archivo (Usuario)
 
                 if (datoUser.equals(String.valueOf(user.longValue()))) {
-                    nombreUsuarioActual = nombreUser;
+                    NOMBRE_USER_ACTUAL = nombreUser;
                     break;
                 }
             }
 
-            return nombreUsuarioActual; // Regresa el valor de nombreUser a donde sea invocada la funcion
+            return NOMBRE_PACIENTE_ACTUAL; // Regresa el valor de nombreUser a donde sea invocada la funcion
 
         } catch (IOException io) {
             throw new IOException("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por
@@ -123,19 +126,6 @@ public class Procesos {
             throw new Exception("Error generico" + e.getMessage()); // Posibles errores genericos
         } finally {
             datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
-        }
-
-    }
-
-    public static String userActual() throws Exception { // Mini-funcion para poder guardar cual es el usuario actual en
-                                                         // cualquier momento.
-
-        try {
-
-            return nombreUsuarioActual;
-
-        } catch (Exception e) {
-            throw new Exception("Error generico: " + e.getMessage());
         }
 
     }
@@ -381,10 +371,13 @@ public class Procesos {
                 if (datoNombre.equalsIgnoreCase(nombre.trim())) { // Este if evaluara si el nombre del paciente del
                                                                   // archivo es igual al que se esta buscando
                     dIPaciente = datosSeparados[1];
+                    ID_PACIENTE = dIPaciente;
                     break;
                 }
 
             }
+
+            NOMBRE_PACIENTE_ACTUAL = datoNombre;
 
             return dIPaciente; // retorna un valor a donde sea invocada la funcion
 
@@ -418,6 +411,7 @@ public class Procesos {
             String linea = "";
             String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
             String datoHabitacion = "";
+            String datoNombre = "";
 
             // DS
             String dIPaciente = "";
@@ -430,16 +424,80 @@ public class Procesos {
                 }
 
                 datosSeparados = linea.trim().split(";");
+                datoNombre = datosSeparados[0].trim();
                 datoHabitacion = datosSeparados[2].trim();
 
                 if (datoHabitacion.equalsIgnoreCase(habitacion.trim())) { // Este if evaluara si el nombre del paciente
                                                                           // del archivo es igual al que se esta
                                                                           // buscando
                     dIPaciente = datosSeparados[1];
+                    ID_PACIENTE = dIPaciente;
                     break;
                 }
 
             }
+
+            NOMBRE_PACIENTE_ACTUAL = datoNombre;
+
+            return dIPaciente; // retorna un valor a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static String busquedaXID(String dI) throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datodI = "";
+            String datoNombre = "";
+
+            // DS
+            String dIPaciente = "";
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoNombre = datosSeparados[0].trim();
+                datodI = datosSeparados[1].trim();
+
+                if (datodI.equalsIgnoreCase(dI.trim())) { // Este if evaluara si el nombre del paciente
+                                                          // del archivo es igual al que se esta
+                                                          // buscando
+                    dIPaciente = datosSeparados[1];
+                    ID_PACIENTE = dIPaciente;
+                    break;
+                }
+
+            }
+
+            NOMBRE_PACIENTE_ACTUAL = datoNombre;
 
             return dIPaciente; // retorna un valor a donde sea invocada la funcion
 
@@ -596,23 +654,23 @@ public class Procesos {
 
         try {
             // Variables para lectura
-            String listaPacientes = "listaPacientes.txt"; 
+            String listaPacientes = "listaPacientes.txt";
             ubicacionArchivoPaciente = new File((RUTA_CARPETA_PACIENTES + dIPaciente.trim() + ".txt"));
             archivoLectura = new FileReader(ubicacionArchivoPaciente);
             datosArchivo = new BufferedReader(archivoLectura);
 
-            //DE archivo
+            // DE archivo
             String linea = "";
             String[] datosSeparados = null;
             String nombrePaciente = null;
             String datoHabitacion = "";
             String datoDI = "";
 
-            //DS
+            // DS
             int diasInt = Integer.parseInt(dias);
             int pago = 0;
 
-            //Buscar en archivo del paciente
+            // Buscar en archivo del paciente
             while ((linea = datosArchivo.readLine()) != null) {
 
                 if (linea.trim().isEmpty()) {
@@ -645,21 +703,21 @@ public class Procesos {
                 }
             }
 
-            lector.close(); 
+            lector.close();
             escritor.close();
 
             archivoOriginal.delete();
             archivoTemporal.renameTo(archivoOriginal);
 
-
-            //Crear archivo factura
+            // Crear archivo factura
             File archivoFactura = new File(RUTA_CARPETA_FACTURA + datoDI + "Factura.txt");
             facturaWriter = new FileWriter(archivoFactura, true);
             facturaPrint = new PrintWriter(facturaWriter);
 
             facturaPrint.println("\n\n//////////////////////////- FACTURA -//////////////////////////\n\n");
-            facturaPrint.println("Fecha y hora: "+LocalDateTime.now()+"\n\n");
-            facturaPrint.println("El usuario: "+ nombrePaciente +" se ha hospedado [ " + dias + " ] día(s) en el hospital\n\n");
+            facturaPrint.println("Fecha y hora: " + LocalDateTime.now() + "\n\n");
+            facturaPrint.println(
+                    "El usuario: " + nombrePaciente + " se ha hospedado [ " + dias + " ] día(s) en el hospital\n\n");
 
             if (datoHabitacion.contains("A")) {
                 pago = diasInt * 350000;
@@ -671,26 +729,297 @@ public class Procesos {
             facturaPrint.println("\n\n//////////////////////////- BUEN DÍA -//////////////////////////\n");
 
         } catch (IOException io) {
-            Notification.show("Error en io"+io.getMessage());
+            Notification.show("Error en io" + io.getMessage());
             throw new IOException("Error en la consulta de archivos " + io.getMessage());
         } catch (Exception e) {
-            Notification.show("Error generico"+e.getMessage());
-            throw new Exception("Error generico: " + e.getMessage()); 
+            Notification.show("Error generico" + e.getMessage());
+            throw new Exception("Error generico: " + e.getMessage());
         } finally {
-            //Ayuda de (IA) porque habian errores inencontrables y ejecuciones que no se hacian 
-            /*Se tienen que hacer una verificación de que no sean nulos para evitar:
+            // Ayuda de (IA) porque habian errores inencontrables y ejecuciones que no se
+            // hacian
+            /*
+             * Se tienen que hacer una verificación de que no sean nulos para evitar:
              * Que el programa explote
              * No se pierdan excepciones importantes
              * No se corrompan archivos temporales
              * No se interrumpa la lógica del rename/delete
-            */
-            //(IA)
-            if (datosArchivo != null) datosArchivo.close();
-            if (facturaPrint != null) facturaPrint.close();
-            if (facturaWriter != null) facturaWriter.close();
-            if (archivoLectura != null) archivoLectura.close();
-            if (archivoOriginalLectura != null) archivoOriginalLectura.close();
-            if (archivoTemporalEscritua != null) archivoTemporalEscritua.close();
+             */
+            // (IA)
+            if (datosArchivo != null)
+                datosArchivo.close();
+            if (facturaPrint != null)
+                facturaPrint.close();
+            if (facturaWriter != null)
+                facturaWriter.close();
+            if (archivoLectura != null)
+                archivoLectura.close();
+            if (archivoOriginalLectura != null)
+                archivoOriginalLectura.close();
+            if (archivoTemporalEscritua != null)
+                archivoTemporalEscritua.close();
         }
     }
+
+    public static String historialMedico() throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String historialPaciente = ID_PACIENTE + ".txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA_CARPETA_PACIENTES + historialPaciente);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+
+            // DS
+            String acumuladoMensaje = "";
+
+            datosArchivo.readLine(); // Saltear primera linea la cual no nos importa que imprima
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                acumuladoMensaje += linea + "\n";
+
+            }
+
+            return acumuladoMensaje; // retorna un valor a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static void escribirIndicaciones(String textoAñadir) throws Exception {
+
+        // Contexto de la funcion
+        File ubicacionArchivoIndicacionesPaciente = null;
+        FileWriter archivoEscritura = null;
+        PrintWriter escritura = null;
+
+        try {
+
+            // Variables para lectura
+            String indicacionesArchivo = ID_PACIENTE + "Indicaciones.txt"; // archivo al que entraran datos generales de
+                                                                           // pacientes
+            ubicacionArchivoIndicacionesPaciente = new File(RUTA_CARPETA_INDICACIONES + indicacionesArchivo);
+            archivoEscritura = new FileWriter(ubicacionArchivoIndicacionesPaciente, true);
+            escritura = new PrintWriter(archivoEscritura);
+
+            escritura.println(textoAñadir
+                    + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            escritura.close();
+        }
+
+    }
+
+    public static String leerIndicaciones() throws Exception {
+
+        File ubicacionArchivoIndicacionesPaciente = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String indicacionesArchivo = ID_PACIENTE + "Indicaciones.txt"; // archivo al que entraran datos generales de
+                                                                           // pacientes
+            ubicacionArchivoIndicacionesPaciente = new File(RUTA_CARPETA_INDICACIONES + indicacionesArchivo);
+            archivoLectura = new FileReader(ubicacionArchivoIndicacionesPaciente);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+
+            // DS
+            String acumuladoMensaje = "";
+
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                acumuladoMensaje += linea + "\n";
+
+            }
+
+            return acumuladoMensaje; // retorna un valor a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static void escribirEvolucion(String textoAñadir) throws Exception {
+
+        // Contexto de la funcion
+        File ubicacionArchivoPaciente = null;
+        FileWriter archivoEscritura = null;
+        PrintWriter escritura = null;
+
+        try {
+
+            // Variables para lectura
+            String archivoPaciente = ID_PACIENTE + ".txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoPaciente = new File(RUTA_CARPETA_PACIENTES + archivoPaciente);
+            archivoEscritura = new FileWriter(ubicacionArchivoPaciente, true);
+            escritura = new PrintWriter(archivoEscritura);
+
+            escritura.println(textoAñadir
+                    + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            escritura.close();
+        }
+
+    }
+
+    public static void escribirMedicamento(String textoAñadir) throws Exception {
+
+        // Contexto de la funcion
+        File ubicacionArchivoPaciente = null;
+        FileWriter archivoEscritura = null;
+        PrintWriter escritura = null;
+
+        try {
+
+            // Variables para lectura
+            String archivoPaciente = ID_PACIENTE + ".txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoPaciente = new File(RUTA_CARPETA_PACIENTES + archivoPaciente);
+            archivoEscritura = new FileWriter(ubicacionArchivoPaciente, true);
+            escritura = new PrintWriter(archivoEscritura);
+
+            escritura.println(textoAñadir
+                    + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            escritura.close();
+        }
+
+    }
+
+    public static void altaMedica(String textoAñadir) throws Exception {
+
+        // Contexto de la funcion
+        File ubicacionArchivoPaciente = null;
+        FileWriter archivoEscritura = null;
+        PrintWriter escritura = null;
+
+        try {
+
+            // Variables para lectura
+            String archivoPaciente = ID_PACIENTE + ".txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoPaciente = new File(RUTA_CARPETA_PACIENTES + archivoPaciente);
+            archivoEscritura = new FileWriter(ubicacionArchivoPaciente, true);
+            escritura = new PrintWriter(archivoEscritura);
+
+            escritura.println(textoAñadir
+                    + "\n\nFecha y hora de la alta medica: " + LocalDateTime.now()
+                    + "\n\n////////////-Alta Medica Generada para: " + ID_PACIENTE + "-////////////\n");
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            escritura.close();
+        }
+
+    }
+
+    public static Boolean tieneAltaMedica(String idPaciente) throws Exception {
+
+        File ubicacionArchivoPaciente = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            String archivo = idPaciente + ".txt";
+            ubicacionArchivoPaciente = new File(RUTA_CARPETA_PACIENTES + archivo);
+            archivoLectura = new FileReader(ubicacionArchivoPaciente);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            String linea;
+            String nombrePaciente = "";
+            boolean tieneAlta = false;
+
+            // Primera línea: datos del paciente
+
+            if ((linea = datosArchivo.readLine()) != null) {
+                String[] datos = linea.split(";");
+                nombrePaciente = datos[0].trim();
+            }
+
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty())
+                    continue;
+
+                if (linea.contains("Alta Medica Generada para:")) {
+                    tieneAlta = true;
+                }
+                // el paciente reingresó
+                else if (linea.trim().equals(nombrePaciente)) {
+                    tieneAlta = false;
+                }
+            }
+
+            return tieneAlta;
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        }
+
+        finally {
+            if (datosArchivo != null)
+                datosArchivo.close();
+        }
+
+    }
+
 }

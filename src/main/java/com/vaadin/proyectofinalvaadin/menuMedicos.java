@@ -14,6 +14,8 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -100,7 +102,7 @@ public class menuMedicos extends VerticalLayout {
             MenuBar menuBar = new MenuBar();
             MenuItem menu = menuBar.addItem(new Icon(VaadinIcon.USER));
             SubMenu subMenu = menu.getSubMenu();
-            subMenu.addItem(Procesos.userActual()).setEnabled(false);
+            subMenu.addItem(Procesos.NOMBRE_USER_ACTUAL).setEnabled(false);
             subMenu.addItem("⏻ Cerrar sesión", e -> {
                 UI.getCurrent().navigate("");
             }).getStyle().set("color", "#ff0000ff");
@@ -142,15 +144,17 @@ public class menuMedicos extends VerticalLayout {
                     "Escriba el nombre completo del paciente sin tildes o caracteres especiales(@, *, .)");
             searchByName.addKeyPressListener(Key.ENTER, event -> {
                 try {
+                    String dIPaciente = Procesos.busquedaXNombre(searchByName.getValue());
+
                     if ((searchByName.getValue()).isEmpty()) {
                         Notification.show("El campo no puede estar vacio");
                     } else if ((searchByName.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByName.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales");
-                    }else if (false) {
-                        //TODO: Falta función para verificar que si exista el paciente, lo mismo en el menuEnfermeros
+                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                        Notification.show("Paciente no existe o no registrado");
                     } else {
-                        String dIPaciente = Procesos.busquedaXNombre(searchByName.getValue());
+
                         mostrarVistaMenu();
                     }
                 } catch (Exception e) {
@@ -163,17 +167,18 @@ public class menuMedicos extends VerticalLayout {
                     "Escriba el número de documento del paciente");
             searchByDocument.addKeyPressListener(Key.ENTER, event -> {
                 try {
+                    String dIPaciente = Procesos.busquedaXID(searchByDocument.getValue());
+
                     if (!(searchByDocument.getValue()).matches("\\d*")) {
                         Notification.show("Deben ser solo numeros");
                     } else if ((searchByDocument.getValue()).isEmpty()) {
                         Notification.show("El campo no puede estar vacio");
                     } else if ((searchByDocument.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten caracteres especiales");
-                    }else if (false) {
-                        //TODO: Falta función para verificar que si exista el paciente, lo mismo en el menuEnfermeros
+                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                        Notification.show("Paciente no existe o no registrado");
                     } else {
-                        String dIPaciente = searchByDocument.getValue();
-                        //TODO: Falta la función de busqueda por documento, no?, en el menuEnfermeros tambien
+
                         mostrarVistaMenu();
                     }
                 } catch (Exception e) {
@@ -186,15 +191,17 @@ public class menuMedicos extends VerticalLayout {
                     "Escriba el número de habitación del paciente");
             searchByRoom.addKeyPressListener(Key.ENTER, event -> {
                 try {
+                    String dIPaciente = Procesos.busquedaXHabitacion(searchByRoom.getValue());
+
                     if (((searchByRoom.getValue()).toUpperCase()).isEmpty()) {
                         Notification.show("El campo no puede estar vacio");
                     } else if ((searchByRoom.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByRoom.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales, exceptuando \"-\"");
-                    }else if (false) {
-                        //TODO: Falta función para verificar que si exista el paciente, lo mismo en el menuEnfermeros
+                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                        Notification.show("Paciente no existe o no registrado");
                     } else {
-                        String dIPaciente = Procesos.busquedaXHabitacion(searchByRoom.getValue());
+
                         mostrarVistaMenu();
                     }
                 } catch (Exception e) {
@@ -226,7 +233,7 @@ public class menuMedicos extends VerticalLayout {
             // Texto de instrucciones
             Paragraph txtInstrunciones = new Paragraph(
                     "Escribir en la parte de arriba como quiere buscar al paciente (Nombre, Documento, Habitación). " +
-                            "Luego de eso le aparecerá en pantalla la información.");
+                            "Luego de eso le aparecerá en pantalla la información. Para las habitaciones tipo B, buscar así: [Habitación] - [C+Número de cama(1 o 2)].");
             txtInstrunciones.getStyle()
                     .set("color", "#2c3e50")
                     .set("font-size", "1.1em")
@@ -268,7 +275,8 @@ public class menuMedicos extends VerticalLayout {
 
     }
 
-    // Método para crear campos de búsqueda (Uso de IA para generar un cuadro de busqueda bien melo)
+    // Método para crear campos de búsqueda (Uso de IA para generar un cuadro de
+    // busqueda bien melo)
     public static TextField campoBusqueda(String placeholder, VaadinIcon icon, String tooltip) {
         TextField field = new TextField();
         field.setPlaceholder(placeholder);
@@ -283,28 +291,30 @@ public class menuMedicos extends VerticalLayout {
         return field;
     }
 
-    // Método para aplicar estilos a los campos de busqueda (Uso de IA para generar un cuadro de busqueda bien melo)
+    // Método para aplicar estilos a los campos de busqueda (Uso de IA para generar
+    // un cuadro de busqueda bien melo)
     public static void estiloPredeterminado(TextField field) {
         field.getElement().getStyle()
-            .set("border", "2px solid #98d4fcff")
-            .set("border-radius", "8px")
-            .set("background", "#f8f9fa")
-            .set("transition", "all 0.3s ease")
-            .set("padding", "8px")
-        ;
+                .set("border", "2px solid #98d4fcff")
+                .set("border-radius", "8px")
+                .set("background", "#f8f9fa")
+                .set("transition", "all 0.3s ease")
+                .set("padding", "8px");
 
-        //Estilos para el input interno dentro del TextField
+        // Estilos para el input interno dentro del TextField
         field.getElement().executeJs(
-            "this.style.setProperty('--lumo-text-field-background', '#f8f9fa');" +
-            "this.style.setProperty('--lumo-text-field-border-color', '#bdc3c7');" +
-            "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
-            "this.style.setProperty('--lumo-text-field-border-width', '2px');")
-        ;
+                "this.style.setProperty('--lumo-text-field-background', '#f8f9fa');" +
+                        "this.style.setProperty('--lumo-text-field-border-color', '#bdc3c7');" +
+                        "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
+                        "this.style.setProperty('--lumo-text-field-border-width', '2px');");
     }
 
     public void mostrarVistaMenu() {
-        contenedor.removeAll(); //borra vista original
-        contenedor.getStyle().set("margin", "60px");
+        contenedor.removeAll(); // borra vista original
+        contenedor.getStyle()
+            .set("margin", "60px")
+            .set("scroll-y","auto")
+        ;
 
         HorizontalLayout layoutGeneral = new HorizontalLayout();
         layoutGeneral.setSizeFull();
@@ -317,24 +327,23 @@ public class menuMedicos extends VerticalLayout {
         headerLayout.getStyle().set("margin-bottom", "20px");
 
         // Título principal
-        H1 mainTitle = new H1("Paciente: "/*TODO: Agregar el nombre de la persona que se busco*/);
+        H1 mainTitle = new H1("Paciente: " + Procesos.NOMBRE_PACIENTE_ACTUAL);
         mainTitle.getStyle()
-            .set("color", "#2c3e50")
-            .set("margin", "0")
-            .set("font-size", "30px")
-            .set("font-weight", "bold")
-            .set("text-shadow", "1px 1px 2px #0000001a")
-        ;
+                .set("color", "#2c3e50")
+                .set("margin", "0")
+                .set("font-size", "30px")
+                .set("font-weight", "bold")
+                .set("text-shadow", "1px 1px 2px #0000001a");
 
         headerLayout.add(mainTitle);
 
-        //Menú lateral
+        // Menú lateral
         VerticalLayout menuLateral = new VerticalLayout();
         menuLateral.setWidth("290px");
         menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
 
         Button btn0 = new Button("Historia medica");
-        Button btn1 = new Button("Indicaciones a Enfermeras"); 
+        Button btn1 = new Button("Indicaciones a Enfermeras");
         Button btn2 = new Button("Medicamentos suministrados");
         Button btn3 = new Button("Generar alta médica");
         Button btn4 = new Button("Evolución del paciente");
@@ -344,34 +353,64 @@ public class menuMedicos extends VerticalLayout {
 
         menuLateral.add(btn0, btn1, btn2, btn3, btn4, btnRegresar);
 
-        //Panel central
+        // Panel central
         VerticalLayout panelCentral = new VerticalLayout();
         panelCentral.setSizeFull();
         panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        btn0.addClickListener(e -> cargarPanelSoloTitulo("Historia medica", panelCentral));
-        btn1.addClickListener(e -> cargarPanel("Indicaciones a Enfermeras", panelCentral));  //TODO: Guardar lo que el medico escriba y exponerlo en menuEnfermeros
-        btn2.addClickListener(e -> cargarPanelMedicamentos("Medicamentos Suministrados", panelCentral)); //TODO: Poner la tabla de agregar para medicamentos, pille la funcion abajo
-        btn3.addClickListener(e -> cargarPanel("Generar Alta Médica", panelCentral));
-        btn4.addClickListener(e -> cargarPanel("Evolución del Paciente", panelCentral));
+        btn0.addClickListener(e -> cargarPanelHistorialMedico("Historia medica", panelCentral));
+        btn1.addClickListener(e -> indicaciones("Indicaciones a Enfermeras", panelCentral));
+        btn2.addClickListener(e -> cargarPanelMedicamentos("Medicamentos a suministrar", panelCentral));
+        btn3.addClickListener(e -> cargarAltaMedica("Generar Alta Médica", panelCentral));
+        btn4.addClickListener(e -> evolucionPaciente("Evolución del Paciente", panelCentral));
 
         btnRegresar.addClickListener(e -> restaurarVistaOriginal());
 
         layoutGeneral.add(menuLateral, panelCentral);
 
-        contenedor.add(headerLayout,layoutGeneral);
+        contenedor.add(headerLayout, layoutGeneral);
     }
 
     public void restaurarVistaOriginal() {
-        //limpia lo que haya en el contenedor (el layout del menú)
+        // limpia lo que haya en el contenedor (el layout del menú)
         contenedor.removeAll();
 
-        //vuelve a añadir los componentes originales desde la lista de backup
+        // vuelve a añadir los componentes originales desde la lista de backup
         if (!contenedorBackup.isEmpty()) {
             contenedor.add(contenedorBackup.toArray(new Component[0]));
         } else {
             Notification.show("No hay vista para restaurar.");
         }
+    }
+
+    public static void evolucionPaciente(String titulo, VerticalLayout panel) {
+        panel.removeAll();
+
+        try {
+            H1 title = new H1(titulo);
+            TextArea area = new TextArea();
+            area.setWidth("80%");
+            area.setHeight("300px");
+
+            Button guardar = new Button("Guardar");
+            guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+            guardar.addClickListener(ev -> { 
+                try {
+                    Procesos.escribirEvolucion(area.getValue());
+                    area.clear();
+                    Notification.show("Indicaciones guardadas con exito");
+                } catch (Exception e) {
+                    Notification.show("Problema en guardar cambios");
+                }
+            });
+
+            panel.add(title, area, guardar);
+
+        } catch (Exception e) {
+            Notification.show("Error al enviar evolucion");
+        }
+
     }
 
     public static void cargarPanel(String titulo, VerticalLayout panel) {
@@ -390,25 +429,131 @@ public class menuMedicos extends VerticalLayout {
         panel.add(title, area, guardar);
     }
 
+    public static void indicaciones(String titulo, VerticalLayout panel) {
+
+        try {
+            panel.removeAll();
+
+            H1 title = new H1(titulo);
+
+            TextArea area = new TextArea();
+            area.setWidth("80%");
+            area.setHeight("300px");
+
+            Button guardar = new Button("Guardar");
+            guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+            guardar.addClickListener(ev -> {
+                try {
+                    Procesos.escribirIndicaciones(area.getValue());
+                    area.clear();
+                    Notification.show("Indicaciones guardadas con exito");
+                } catch (Exception e) {
+                    Notification.show("Problema en guardar cambios");
+                }
+            });
+
+            panel.add(title, area, guardar);
+
+        } catch (Exception e) {
+            Notification.show("Error al ingresar las indicaciones");
+        }
+    }
+
     public static void cargarPanelMedicamentos(String titulo, VerticalLayout panel) {
 
-        panel.removeAll();
+        try {
+            panel.removeAll();
 
-        H1 title = new H1(titulo);
+            H1 title = new H1(titulo);
 
-        //TODO: AQUI TABLA MEDICAMENTOS, guardar lo que se hizo aca y mostrarlo en menuEnfermeros
+            TextArea area = new TextArea();
+            area.setWidth("80%");
+            area.setHeight("300px");
 
-        panel.add(title);
+            Button guardar = new Button("Guardar");
+            guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+            guardar.addClickListener(ev -> {
+                try {
+                    Procesos.escribirMedicamento(area.getValue());
+                    area.clear();
+                    Notification.show("Medicamentos guardados con exito");
+                } catch (Exception e) {
+                    Notification.show("Problema en guardar cambios");
+                }
+            });
+
+            panel.add(title, area, guardar);
+
+        } catch (Exception e) {
+            Notification.show("Error al ingresar las indicaciones");
+        }
     }
 
-    public static void cargarPanelSoloTitulo(String titulo, VerticalLayout panel) {
+    public static void cargarPanelHistorialMedico(String titulo, VerticalLayout panel) {
+        try {
+            panel.removeAll();
+
+            H1 title = new H1(titulo);
+            title.getStyle()
+                    .set("margin-top", "-10px")
+                    .set("color", "#2c3e50");
+
+            Div contenedorScroll = new Div();
+            contenedorScroll.setWidth("100%");
+            contenedorScroll.setHeight("300px");
+            contenedorScroll.getStyle()
+                .set("overflow-y", "auto") 
+                .set("overflow-x", "hidden")
+                .set("padding", "10px")
+                .set("border-radius", "8px")
+                .set("background", "#ffffff")
+            ;
+
+            H5 historial = new H5(Procesos.historialMedico());
+            historial.getStyle()
+                    .set("white-space", "pre-wrap") // respeta saltos de línea del txt
+                    .set("overflow-wrap", "break-word")
+                    .set("margin-top", "0px")
+                    .set("color", "#2c3e50");
+
+            contenedorScroll.add(historial);
+
+            panel.add(title, contenedorScroll);
+        } catch (Exception e) {
+            Notification.show("Error al buscar el historial, contactar soporte");
+        }
+    }
+
+    public static void cargarAltaMedica(String titulo, VerticalLayout panel) {
         panel.removeAll();
 
-        H1 title = new H1(titulo);
-        title.getStyle()
-            .set("margin-top", "40px")
-            .set("color", "#2c3e50");
+        try {
+            H1 title = new H1(titulo);
+            TextArea area = new TextArea();
+            area.setWidth("80%");
+            area.setHeight("300px");
 
-        panel.add(title);
+            Button guardar = new Button("Guardar");
+            guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+            guardar.addClickListener(ev -> {
+                try {
+                    Procesos.altaMedica(area.getValue());
+                    area.clear();
+                    Notification.show("Indicaciones guardadas con exito");
+                } catch (Exception e) {
+                    Notification.show("Problema en guardar cambios");
+                }
+            });
+
+            panel.add(title, area, guardar);
+
+        } catch (Exception e) {
+            Notification.show("Error al enviar evolucion");
+        }
+
     }
+
 }
