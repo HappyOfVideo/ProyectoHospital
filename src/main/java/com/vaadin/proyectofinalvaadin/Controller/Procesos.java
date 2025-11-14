@@ -2,6 +2,10 @@ package com.vaadin.proyectofinalvaadin.Controller;
 
 import java.io.*;
 
+import com.vaadin.flow.component.button.Button;
+
+import jakarta.el.ELException;
+
 public class Procesos {
 
     // Globales
@@ -60,8 +64,9 @@ public class Procesos {
             return credencialesValidas; // Regresa el valor de credencialesValidas a donde sea invocada la funcion
 
         } catch (IOException io) {
-            throw new Exception("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por consulta
-                                                                                       // de archivos (IOException)
+            throw new IOException("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por
+                                                                                         // consulta
+                                                                                         // de archivos (IOException)
         } catch (Exception e) {
             throw new Exception("Error generico" + e.getMessage()); // Posibles errores genericos
         } finally {
@@ -111,8 +116,9 @@ public class Procesos {
             return nombreUsuarioActual; // Regresa el valor de nombreUser a donde sea invocada la funcion
 
         } catch (IOException io) {
-            throw new Exception("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por consulta
-                                                                                       // de archivos (IOException)
+            throw new IOException("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por
+                                                                                         // consulta
+                                                                                         // de archivos (IOException)
         } catch (Exception e) {
             throw new Exception("Error generico" + e.getMessage()); // Posibles errores genericos
         } finally {
@@ -134,7 +140,7 @@ public class Procesos {
 
     }
 
-    public static String registroPacientesNuevo(String nombre, String dI, String habitacion) throws Exception {
+    public static void registroPacientesHabitacionesA(String nombre, String dI, String habitacion) throws Exception {
 
         // Contexto de la funcion
         File ubicacionArchivoListaPacientes = null;
@@ -159,12 +165,10 @@ public class Procesos {
             String linea = "";
             String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
             String datoDI = "";
+            String datoHabitacion = "";
 
             // VA
-            boolean estaRegistado = false; // Boolean que nos permitira evaluar si ya esta registrado el paciente
-
-            // DS
-            String estadoRegistro = "El usuario ya ha sido registrado"; // String que se exportara al Index.View
+            boolean estaRegistado = true; // Boolean que nos permitira evaluar si ya esta registrado el paciente
 
             datosArchivo.readLine(); // Saltear encabezado
             while ((linea = datosArchivo.readLine()) != null) {
@@ -179,41 +183,46 @@ public class Procesos {
                 if (dI.equalsIgnoreCase(datoDI)) { // Este if evaluara si el documento de identidad del paciente es
                                                    // igual a alguno ya registrado para poder darle un valor a
                                                    // estaRegistrado
-                    estaRegistado = true;
+                    estaRegistado = false;
                     break;
                 }
-
             }
-            if (!estaRegistado) { // Se pone el ! para darle un valor invertido al boolean y poder entrar en el if
-                                  // en caso de que el usuario no este registrado
+            if (estaRegistado) { // Este if en caso de que el usuario no este registrado registrara al usuario
 
                 archivoEscrituraLista = new FileWriter(RUTA + listaPacientes, true); // Se invocan las variables de
                                                                                      // escritura de lista de paciente,
-                                                                                     // añadiendo el append: True para
-                                                                                     // no borrar lo que ya estaba en el
-                                                                                     // archivo
+                                                                                     // añadiendo el append: True
+                                                                                     // para no borrar lo que ya estaba
+                                                                                     // en el archivo
                 escrituraLista = new PrintWriter(archivoEscrituraLista);
 
                 escrituraLista.println(nombre + ";" + dI + ";" + habitacion); // Ingresar en una linea del .txt la
                                                                               // informacion primordial del paciente
 
-                archivoEscrituraPaciente = new FileWriter(RUTA + dI.trim() + ".txt", true); // Se crea un archivo con el
-                                                                                            // documento de identidad
-                                                                                            // del paciente ya que es el
-                                                                                            // identificador unico en un
-                                                                                            // .txt
+                archivoEscrituraPaciente = new FileWriter(RUTA_CARPETA_PACIENTES + dI.trim() + ".txt", true); // Se crea
+                                                                                                              // un
+                                                                                                              // archivo
+                                                                                                              // con el
+                                                                                                              // documento
+                                                                                                              // de
+                                                                                                              // identidad
+                                                                                                              // del
+                                                                                                              // paciente
+                                                                                                              // ya que
+                                                                                                              // es el
+                                                                                                              // identificador
+                                                                                                              // unico
+                                                                                                              // en
+                                                                                                              // un.txt
                 escrituraPaciente = new PrintWriter(archivoEscrituraPaciente);
 
-                estadoRegistro = "Ha sido registrado exitosamente"; // Cambio de estadoRegistro para indicar el nuevo
-                                                                    // registro
+                escrituraPaciente.println(nombre + ";" + dI + ";" + habitacion);
 
             }
 
-            return estadoRegistro; // Regresa el valor de estadoRegistro a donde sea invocada la funcion
-
-        } catch (IOException IO) {
-            throw new Exception("Error en la consulta de archivos" + IO.getMessage());// Posibles errores por consulta
-                                                                                      // de archivos (IOException)
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
         } catch (Exception e) {
             throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
         } finally {
@@ -222,6 +231,452 @@ public class Procesos {
             datosArchivo.close();
             escrituraLista.close();
             archivoEscrituraPaciente.close();
+        }
+
+    }
+
+    public static void registroPacientesHabitacionesB(String nombre, String dI, String habitacion, String cama)
+            throws Exception {
+
+        // Contexto de la funcion
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        FileWriter archivoEscrituraLista = null;
+        PrintWriter escrituraLista = null;
+
+        FileWriter archivoEscrituraPaciente = null;
+        PrintWriter escrituraPaciente = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoDI = "";
+            String datoHabitacion = "";
+            String datoCama = "";
+
+            // VA
+            boolean estaRegistado = true; // Boolean que nos permitira evaluar si ya esta registrado el paciente
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoDI = datosSeparados[1];
+                datoHabitacion = datosSeparados[2];
+
+                if (dI.equalsIgnoreCase(datoDI) || datoHabitacion.equalsIgnoreCase(habitacion + " - " + cama)) { // Este
+                                                                                                                 // if
+                                                                                                                 // evaluara
+                                                                                                                 // si
+                                                                                                                 // el
+                                                                                                                 // documento
+                                                                                                                 // de
+                                                                                                                 // identidad
+                                                                                                                 // del
+                                                                                                                 // paciente
+                                                                                                                 // es
+                    // igual a alguno ya registrado para poder darle un valor a
+                    // estaRegistrado
+                    estaRegistado = false;
+                    break;
+                }
+            }
+            if (estaRegistado) { // Este if en caso de que el usuario no este registrado registrara al usuario
+
+                archivoEscrituraLista = new FileWriter(RUTA + listaPacientes, true); // Se invocan las variables de
+                                                                                     // escritura de lista de paciente,
+                                                                                     // añadiendo el append: True
+                                                                                     // para no borrar lo que ya estaba
+                                                                                     // en el archivo
+                escrituraLista = new PrintWriter(archivoEscrituraLista);
+
+                escrituraLista.println(nombre + ";" + dI + ";" + habitacion + " - " + cama); // Ingresar en una linea
+                                                                                             // del .txt la
+                // informacion primordial del paciente
+
+                archivoEscrituraPaciente = new FileWriter(RUTA_CARPETA_PACIENTES + dI.trim() + ".txt", true); // Se crea
+                                                                                                              // un
+                                                                                                              // archivo
+                                                                                                              // con el
+                                                                                                              // documento
+                                                                                                              // de
+                                                                                                              // identidad
+                                                                                                              // del
+                                                                                                              // paciente
+                                                                                                              // ya que
+                                                                                                              // es el
+                                                                                                              // identificador
+                                                                                                              // unico
+                                                                                                              // en
+                                                                                                              // un.txt
+                escrituraPaciente = new PrintWriter(archivoEscrituraPaciente);
+
+                escrituraPaciente.println(nombre + ";" + dI + ";" + habitacion + " - " + cama);
+
+            }
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            datosArchivo.close();
+            escrituraLista.close();
+            archivoEscrituraPaciente.close();
+        }
+
+    }
+
+    // Apartado de buscadores
+
+    public static String busquedaXNombre(String nombre) throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoNombre = "";
+
+            // DS
+            String dIPaciente = "";
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoNombre = datosSeparados[0].trim();
+
+                if (datoNombre.equalsIgnoreCase(nombre.trim())) { // Este if evaluara si el nombre del paciente del
+                                                                  // archivo es igual al que se esta buscando
+                    dIPaciente = datosSeparados[1];
+                    break;
+                }
+
+            }
+
+            return dIPaciente; // retorna un valor a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static String busquedaXHabitacion(String habitacion) throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoHabitacion = "";
+
+            // DS
+            String dIPaciente = "";
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoHabitacion = datosSeparados[2].trim();
+
+                if (datoHabitacion.equalsIgnoreCase(habitacion.trim())) { // Este if evaluara si el nombre del paciente
+                                                                          // del archivo es igual al que se esta
+                                                                          // buscando
+                    dIPaciente = datosSeparados[1];
+                    break;
+                }
+
+            }
+
+            return dIPaciente; // retorna un valor a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static boolean estadoHabitacionA(String numHabitacion) throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoHabitacion = "";
+
+            // DS
+            Boolean estaLibre = true;
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoHabitacion = datosSeparados[2].trim();
+
+                if (datoHabitacion.equalsIgnoreCase(numHabitacion.trim())) { // Este if evaluara si el nombre del
+                                                                             // paciente
+                                                                             // del archivo es igual al que se esta
+                                                                             // buscando
+                    estaLibre = false;
+                    break;
+                }
+
+            }
+
+            return estaLibre; // retorna un boolean a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static boolean estadoHabitacionB(String numHabitacion) throws Exception {
+
+        File ubicacionArchivoListaPacientes = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoListaPacientes = new File(RUTA + listaPacientes);
+            archivoLectura = new FileReader(ubicacionArchivoListaPacientes);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE Archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoHabitacion = "";
+
+            // DE
+            String cama1 = numHabitacion + " - C1";
+            String cama2 = numHabitacion + " - C2";
+
+            // VA
+            int sumVerify = 0;
+
+            // DS
+            Boolean estaLibre = true;
+
+            datosArchivo.readLine(); // Saltear encabezado
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoHabitacion = datosSeparados[2].trim();
+
+                if (datoHabitacion.equalsIgnoreCase(cama1)) {
+                    sumVerify += 1;
+                } else if (datoHabitacion.equalsIgnoreCase(cama2)) {
+                    sumVerify += 2;
+                }
+
+            }
+
+            if (sumVerify == 3) {
+                estaLibre = false;
+            }
+
+            return estaLibre; // retorna un boolean a donde sea invocada la funcion
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos: " + io.getMessage()); // Posibles errores por
+                                                                                           // consulta
+                                                                                           // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
+        }
+
+    }
+
+    public static void facturar(String dIPaciente, String dias) throws Exception {
+
+        // Contexto de la funcion
+
+        File ubicacionArchivoPaciente = null;
+        FileReader archivoLectura = null;
+        BufferedReader datosArchivo = null;
+
+        FileWriter archivoEscrituraLista = null;
+        PrintWriter escrituraLista = null;
+
+        File archivoOriginal = null;
+        File archivoTemporal = null;
+        FileReader archivoOriginalLectura = null;
+        FileWriter archivoTemporalEscritua = null;
+        BufferedReader lector = null;
+        BufferedWriter escritor = null;
+
+        try {
+
+            // Variables para lectura
+            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            ubicacionArchivoPaciente = new File((RUTA_CARPETA_PACIENTES + dIPaciente.trim() + ".txt"));
+            archivoLectura = new FileReader(ubicacionArchivoPaciente);
+            datosArchivo = new BufferedReader(archivoLectura);
+
+            // DE archivo
+            String linea = "";
+            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String datoHabitacion = "";
+            String datoDI = "";
+
+            // DS
+            int diasInt = Integer.parseInt(dias);
+            int pago = 0;
+
+            while ((linea = datosArchivo.readLine()) != null) {
+
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                datosSeparados = linea.trim().split(";");
+                datoDI = datosSeparados[1];
+                datoHabitacion = datosSeparados[2];
+
+                if (datoDI.equalsIgnoreCase(dIPaciente)) {
+                    break;
+                }
+
+            }
+
+            archivoOriginal = new File(RUTA + listaPacientes);
+            archivoTemporal = new File(RUTA + "temp.txt");
+            archivoOriginalLectura = new FileReader(archivoOriginal);
+            archivoTemporalEscritua = new FileWriter(archivoTemporal);
+            lector = new BufferedReader(archivoOriginalLectura);
+            escritor = new BufferedWriter(archivoTemporalEscritua);
+
+            String lineaBorrar = "";
+            while ((linea = lector.readLine()) != null) {
+
+                if (!linea.contains(dIPaciente)) {
+                    escritor.write(linea);
+                    escritor.newLine();
+                }
+
+            }
+            lector.close(); // Para poder borrar sin problema el archivo
+            archivoOriginal.delete();
+
+            archivoTemporal.renameTo(archivoOriginal);
+
+            archivoEscrituraLista = new FileWriter(ubicacionArchivoPaciente, true);
+            escrituraLista = new PrintWriter(archivoTemporal);
+
+            escrituraLista.println("\n\n//////////////////////////-PAGO-//////////////////////////\n");
+            escrituraLista.println("El usuario se ha hospedado:" + dias + "Días en el hospital");
+
+            if (datoHabitacion.contains("A")) {
+                pago = diasInt * 350000;
+            } else if (datoHabitacion.contains("B")) {
+                pago = diasInt * 175000;
+            }
+
+            escrituraLista.println("\nEl total de pago es: $" + pago);
+            escrituraLista.println("\n\n//////////////////////////////////////////////////////////////\n\n");
+
+        } catch (IOException io) {
+            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
+                                                                                        // de archivos (IOException)
+        } catch (Exception e) {
+            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+        } finally {
+            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
+            // cambios y no consumir más memoria
+            datosArchivo.close();
+            escritor.close();
+            archivoEscrituraLista.close();
+            escrituraLista.close();
+
         }
 
     }

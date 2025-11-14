@@ -11,6 +11,10 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.textfield.TextArea;
+import java.util.ArrayList;
+import java.util.List;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -61,12 +65,15 @@ public class menuEnfermeros extends VerticalLayout {
 
     }
 
+    private Div contenedor; // Contenedor principal
+    private List<Component> contenedorBackup = new ArrayList<>(); // Para restaurar la vista original
+
     //Construir hero, agregara los componentes del encabezado inicial de la pagina
     public void construirHero(FormLayout hero) {
         try {
 
             //Contenedor blanco para el contenido
-            Div contenedor = new Div();
+            contenedor = new Div();
             contenedor.getStyle()
                 .set("background", "white")
                 .set("border-radius", "15px")
@@ -137,7 +144,8 @@ public class menuEnfermeros extends VerticalLayout {
                     }else if ((searchByName.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*") || (searchByName.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales");
                     }else{
-                        // TODO: Buscar en el .txt por el nombre
+                        String dIPaciente = Procesos.busquedaXNombre(searchByName.getValue());
+                        mostrarVistaEnfermeros(); 
                     }
                 } catch (Exception e) {
                     Notification.show("Error de busqueda, comuniquese con soporte");
@@ -155,7 +163,8 @@ public class menuEnfermeros extends VerticalLayout {
                     }else if ((searchByDocument.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten caracteres especiales");
                     }else{
-                        // TODO: Buscar en el .txt por el documento
+                        String dIpaciente = searchByDocument.getValue();
+                        mostrarVistaEnfermeros(); 
                     }
                 } catch (Exception e) {
                     Notification.show("Error de busqueda, comuniquese con soporte");
@@ -171,7 +180,8 @@ public class menuEnfermeros extends VerticalLayout {
                     }else if ((searchByRoom.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*") || (searchByRoom.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales, exceptuando \"-\"");
                     }else{
-                        // TODO: Buscar en el .txt por la habitación
+                        String dIPaciente = Procesos.busquedaXHabitacion(searchByRoom.getValue());
+                        mostrarVistaEnfermeros(); 
                     }
                 } catch (Exception e) {
                     Notification.show("Error de busqueda, comuniquese con soporte");
@@ -241,6 +251,7 @@ public class menuEnfermeros extends VerticalLayout {
             System.err.println("Error en construirHero: " + error);
             e.printStackTrace();
         }
+        contenedor.getChildren().forEach(child -> contenedorBackup.add(child));
     }
 
     
@@ -276,6 +287,76 @@ public class menuEnfermeros extends VerticalLayout {
             "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
             "this.style.setProperty('--lumo-text-field-border-width', '2px');"
         );
+    }
+
+    private void mostrarVistaEnfermeros() {
+
+        contenedor.removeAll(); // Oculta la vista original
+
+        HorizontalLayout layoutGeneral = new HorizontalLayout();
+        layoutGeneral.setSizeFull();
+
+        // --- Menú lateral ---
+        VerticalLayout menuLateral = new VerticalLayout();
+        menuLateral.setWidth("290px");
+        menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
+
+        Button btn0 = new Button("Historia medica");
+        Button btn1 = new Button("Notas diarias");
+        Button btn2 = new Button("Medicamentos suministrados");
+        Button btn3 = new Button("Evolución del paciente");
+        Button btnRegresar = new Button("Regresar");
+        btnRegresar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+        menuLateral.add(btn0, btn1, btn2, btn3, btnRegresar);
+
+        // --- Panel central ---
+        VerticalLayout panelCentral = new VerticalLayout();
+        panelCentral.setSizeFull();
+        panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+        // Eventos
+        btn0.addClickListener(e -> cargarPanelSoloTitulo("Historia medica", panelCentral));
+        btn1.addClickListener(e -> cargarPanel("Notas diarias", panelCentral));
+        btn2.addClickListener(e -> cargarPanel("Medicamentos Suministrados", panelCentral));
+        btn3.addClickListener(e -> cargarPanel("Evolución del paciente", panelCentral));
+        btnRegresar.addClickListener(e -> restaurarVistaOriginal());
+
+        layoutGeneral.add(menuLateral, panelCentral);
+
+        contenedor.add(layoutGeneral);
+    }
+
+    private void cargarPanel(String titulo, VerticalLayout panel) {
+        panel.removeAll();
+
+        H1 title = new H1(titulo);
+        TextArea area = new TextArea();
+        area.setWidth("80%");
+        area.setHeight("300px");
+
+        Button guardar = new Button("Guardar");
+        guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        panel.add(title, area, guardar);
+    }
+
+    private void cargarPanelSoloTitulo(String titulo, VerticalLayout panel) {
+        panel.removeAll();
+        H1 title = new H1(titulo);
+        title.getStyle()
+            .set("margin-top", "40px")
+            .set("color", "#2c3e50");
+        panel.add(title);
+    }
+
+    private void restaurarVistaOriginal() {
+        contenedor.removeAll();
+        if (!contenedorBackup.isEmpty()) {
+            contenedor.add(contenedorBackup.toArray(new Component[0]));
+        } else {
+            Notification.show("No hay vista para restaurar.");
+        }
     }
 
 }

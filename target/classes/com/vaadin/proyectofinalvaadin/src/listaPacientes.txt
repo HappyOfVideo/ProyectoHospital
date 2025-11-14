@@ -1,2 +1,9 @@
 nombre;id;habitacion
-joe Donh;15647802;N.A
+null;null;null
+Joe Donh;15647802;A1
+Juan Paella;1043115530;A4
+Miguel Argaez;12893731;A10
+Carlos Higuita;18122171;B1 - C1
+Eladio Carrion;88818171;B1 - C2
+Jeronimo Valdemir;182127112;B2 - C1
+Samuel Castañeda;19828123;B20 - C2
