@@ -147,6 +147,8 @@ public class imprimirFactura extends VerticalLayout {
                                         .set("background", "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)")
                                         .set("color", "#ffffff");
                         ;
+
+                        //evento al darle click, valida errores y ejecuta si todo esta bien
                         try {
                                 agregar.addClickListener(ev -> {
                                         String dp = String.valueOf(documentoPaciente.getValue());

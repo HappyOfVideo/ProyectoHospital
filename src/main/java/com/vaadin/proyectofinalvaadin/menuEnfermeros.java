@@ -284,85 +284,103 @@ public class menuEnfermeros extends VerticalLayout {
     // Método para aplicar estilos a los campos de busqueda (Uso de IA para generar
     // un cuadro de busqueda bien melo)
     public static void estiloPredeterminado(TextField field) {
-        field.getElement().getStyle()
-                .set("border", "2px solid #98d4fcff")
-                .set("border-radius", "8px")
-                .set("background", "#f8f9fa")
-                .set("transition", "all 0.3s ease")
-                .set("padding", "8px");
-
-        // Estilos para el input interno dentro del TextField
-        field.getElement().executeJs(
-                "this.style.setProperty('--lumo-text-field-background', '#f8f9fa');" +
-                        "this.style.setProperty('--lumo-text-field-border-color', '#bdc3c7');" +
-                        "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
-                        "this.style.setProperty('--lumo-text-field-border-width', '2px');");
-    }
-
-    public void mostrarVistaEnfermeros() {
-
-        contenedor.removeAll(); // Oculta la vista original
-
-        HorizontalLayout layoutGeneral = new HorizontalLayout();
-        layoutGeneral.setSizeFull();
-
-        // Menú lateral
-        VerticalLayout menuLateral = new VerticalLayout();
-        menuLateral.setWidth("290px");
-        menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
-
-        Button btn0 = new Button("Historia medica");
-        Button btn1 = new Button("Indicaciones");
-        Button btn2 = new Button("Medicamentos suministrados");
-        Button btn3 = new Button("Evolución del paciente");
-        Button btnRegresar = new Button("Regresar");
-        btnRegresar.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
-        menuLateral.add(btn0, btn1, btn2, btn3, btnRegresar);
-
-        // Header
-        HorizontalLayout headerLayout = new HorizontalLayout();
-        headerLayout.setWidthFull();
-        headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        headerLayout.getStyle().set("margin-bottom", "20px");
-
-        // Título principal
-        H1 mainTitle = new H1("Paciente: " + Procesos.NOMBRE_PACIENTE_ACTUAL);
-        mainTitle.getStyle()
-                .set("color", "#2c3e50")
-                .set("margin", "0")
-                .set("font-size", "30px")
-                .set("font-weight", "bold")
-                .set("text-shadow", "1px 1px 2px #0000001a");
-
-        headerLayout.add(mainTitle);
-        // Panel central
-        VerticalLayout panelCentral = new VerticalLayout();
-        panelCentral.setSizeFull();
-        panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-
-        // Eventos
-        btn0.addClickListener(e -> cargarPanelHistorialMedico("Historia medica", panelCentral));
-        btn1.addClickListener(e -> cargarLecturaIndicaciones("Indicaciones", panelCentral));
-        btn2.addClickListener(e -> cargarPanelMedicamentos("Medicamentos Suministrados", panelCentral));
-        btn3.addClickListener(e -> evolucionPaciente("Evolución del paciente", panelCentral));
-        btnRegresar.addClickListener(e -> restaurarVistaOriginal());
-
-        layoutGeneral.add(menuLateral, panelCentral);
-
-        contenedor.add(headerLayout, layoutGeneral);
-    }
-
-    public void restaurarVistaOriginal() {
-        contenedor.removeAll();
-        if (!contenedorBackup.isEmpty()) {
-            contenedor.add(contenedorBackup.toArray(new Component[0]));
-        } else {
-            Notification.show("No hay vista para restaurar.");
+        try {
+            field.getElement().getStyle()
+                    .set("border", "2px solid #98d4fcff")
+                    .set("border-radius", "8px")
+                    .set("background", "#f8f9fa")
+                    .set("transition", "all 0.3s ease")
+                    .set("padding", "8px");
+    
+            // Estilos para el input interno dentro del TextField
+            field.getElement().executeJs(
+                    "this.style.setProperty('--lumo-text-field-background', '#f8f9fa');" +
+                            "this.style.setProperty('--lumo-text-field-border-color', '#bdc3c7');" +
+                            "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
+                            "this.style.setProperty('--lumo-text-field-border-width', '2px');");
+            
+        } catch (Exception e) {
+            Notification.show("Error en generar estilos predeterminados");
         }
     }
 
+    public void mostrarVistaEnfermeros() {
+        try {
+            contenedor.removeAll(); // Oculta la vista original
+    
+            HorizontalLayout layoutGeneral = new HorizontalLayout();
+            layoutGeneral.setSizeFull();
+    
+            // Menú lateral
+            VerticalLayout menuLateral = new VerticalLayout();
+            menuLateral.setWidth("290px");
+            menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
+    
+            Button btn0 = new Button("Historia medica");
+            Button btn1 = new Button("Indicaciones");
+            Button btn2 = new Button("Medicamentos suministrados");
+            Button btn3 = new Button("Evolución del paciente");
+            Button btnRegresar = new Button("Regresar");
+            btnRegresar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+    
+            menuLateral.add(btn0, btn1, btn2, btn3, btnRegresar);
+    
+            // Header
+            HorizontalLayout headerLayout = new HorizontalLayout();
+            headerLayout.setWidthFull();
+            headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+            headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+            headerLayout.getStyle().set("margin-bottom", "20px");
+    
+            // Título principal
+            H1 mainTitle = new H1("Paciente: " + Procesos.NOMBRE_PACIENTE_ACTUAL);
+            mainTitle.getStyle()
+                    .set("color", "#2c3e50")
+                    .set("margin", "0")
+                    .set("font-size", "30px")
+                    .set("font-weight", "bold")
+                    .set("text-shadow", "1px 1px 2px #0000001a");
+    
+            headerLayout.add(mainTitle);
+            // Panel central
+            VerticalLayout panelCentral = new VerticalLayout();
+            panelCentral.setSizeFull();
+            panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+    
+            // Eventos (Uso de IA para ayudar a redirijir los botones)
+            btn0.addClickListener(e -> cargarPanelHistorialMedico("Historia medica", panelCentral));
+            btn1.addClickListener(e -> cargarLecturaIndicaciones("Indicaciones", panelCentral));
+            btn2.addClickListener(e -> cargarPanelMedicamentos("Medicamentos Suministrados", panelCentral));
+            btn3.addClickListener(e -> evolucionPaciente("Evolución del paciente", panelCentral));
+            btnRegresar.addClickListener(e -> restaurarVistaOriginal());
+    
+            layoutGeneral.add(menuLateral, panelCentral);
+    
+            contenedor.add(headerLayout, layoutGeneral);
+            
+        } catch (Exception e) {
+            Notification.show("Error en mostrar vista de enfermeros");
+            return;
+        }
+
+    }
+
+    //quita la vista de detalles y restaura la original
+    public void restaurarVistaOriginal(){
+        try {
+            contenedor.removeAll();
+            if (!contenedorBackup.isEmpty()) {
+                contenedor.add(contenedorBackup.toArray(new Component[0]));
+            } else {
+                Notification.show("No hay vista para restaurar.");
+            }
+        } catch (Exception e) {
+            Notification.show("Error de restauración de vistas");
+            return;
+        }
+    }
+
+    //seccion para escribir la evolucion de los pacientes
     public static void evolucionPaciente(String titulo, VerticalLayout panel) {
         panel.removeAll();
 
@@ -393,6 +411,7 @@ public class menuEnfermeros extends VerticalLayout {
 
     }
 
+    //carga el panel de indicaciones que escribio el medico
     public static void cargarLecturaIndicaciones(String titulo, VerticalLayout panel) {
         try {
             panel.removeAll();
@@ -428,31 +447,38 @@ public class menuEnfermeros extends VerticalLayout {
         }
     }
 
+    //carga el panel de medicamentos que escribio el medico
     public static void cargarPanelMedicamentos(String titulo, VerticalLayout panel) {
-
         panel.removeAll();
+        try {
+            
+            H1 title = new H1(titulo);
+            TextArea area = new TextArea();
+            area.setWidth("80%");
+            area.setHeight("300px");
+    
+            Button guardar = new Button("Guardar");
+            guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    
+            guardar.addClickListener(ev -> {
+                try {
+                    Procesos.escribirMedicamento(area.getValue());
+                    area.clear();
+                    Notification.show("Indicaciones guardadas con exito");
+                } catch (Exception e) {
+                    Notification.show("Problema en guardar cambios");
+                }
+            });
+    
+            panel.add(title, area, guardar);
+        } catch (Exception e) {
+            Notification.show("Error en cargar panel de medicamentos");
+            return;
+        }
 
-        H1 title = new H1(titulo);
-        TextArea area = new TextArea();
-        area.setWidth("80%");
-        area.setHeight("300px");
-
-        Button guardar = new Button("Guardar");
-        guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        guardar.addClickListener(ev -> {
-            try {
-                Procesos.escribirMedicamento(area.getValue());
-                area.clear();
-                Notification.show("Indicaciones guardadas con exito");
-            } catch (Exception e) {
-                Notification.show("Problema en guardar cambios");
-            }
-        });
-
-        panel.add(title, area, guardar);
     }
 
+    //carga el panel de la historia medica del paciente
     public static void cargarPanelHistorialMedico(String titulo, VerticalLayout panel) {
         try {
             panel.removeAll();

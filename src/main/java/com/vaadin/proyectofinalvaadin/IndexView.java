@@ -158,7 +158,8 @@ public class IndexView extends VerticalLayout {
                                                                                                               // de
                                                                                                               // Procesos.java
                                                 String nombreUser = Procesos.separarUser(userN);
-
+                                                
+                                                //dependiendo de la opción escogida y la validacion de los campos, redirije a la vista correcta
                                                 if (acceso) {
                                                         if (tipoU.equals("Administrativo")) {
                                                                 Notification.show("Acceso válido");

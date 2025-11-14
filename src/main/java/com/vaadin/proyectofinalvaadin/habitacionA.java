@@ -143,7 +143,6 @@ public class habitacionA extends VerticalLayout {
                                 bedIcon.setSize("40px");
 
                                 Button habitacion = new Button("HABITACIÓN A" + i, bedIcon);
-                                // int num = i;
                                 habitacion.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                                 habitacion.getStyle()
                                                 .set("width", "150px")
@@ -217,6 +216,7 @@ public class habitacionA extends VerticalLayout {
                                         .set("color", "#ffffff");
                         ;
 
+                        //evento al darle click, valida errores y ejecuta cuando esta bien
                         agregar.addClickListener(e -> {
                                 String dp = String.valueOf(documentoPaciente.getValue());
                                 if (dp == null || nombrePaciente.getValue().equals("")) {

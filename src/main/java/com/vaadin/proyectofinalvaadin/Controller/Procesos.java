@@ -427,7 +427,8 @@ public class Procesos {
                 datoNombre = datosSeparados[0].trim();
                 datoHabitacion = datosSeparados[2].trim();
 
-                if (datoHabitacion.equalsIgnoreCase(habitacion.trim())) { // Este if evaluara si el nombre del paciente
+                if (datoHabitacion.equalsIgnoreCase(habitacion.trim())) { // Este if evaluara si la habitacion del
+                                                                          // paciente
                                                                           // del archivo es igual al que se esta
                                                                           // buscando
                     dIPaciente = datosSeparados[1];
@@ -545,10 +546,8 @@ public class Procesos {
                 datosSeparados = linea.trim().split(";");
                 datoHabitacion = datosSeparados[2].trim();
 
-                if (datoHabitacion.equalsIgnoreCase(numHabitacion.trim())) { // Este if evaluara si el nombre del
-                                                                             // paciente
-                                                                             // del archivo es igual al que se esta
-                                                                             // buscando
+                if (datoHabitacion.equalsIgnoreCase(numHabitacion.trim())) { // Este if evaluara si la habitacion esta
+                                                                             // libre
                     estaLibre = false;
                     break;
                 }
@@ -608,7 +607,9 @@ public class Procesos {
                 datosSeparados = linea.trim().split(";");
                 datoHabitacion = datosSeparados[2].trim();
 
-                if (datoHabitacion.equalsIgnoreCase(cama1)) {
+                if (datoHabitacion.equalsIgnoreCase(cama1)) { // Este if evaluara que camas estan libres y ocupadas para
+                                                              // poder bloquear una habitacion en caso de que ambas
+                                                              // esten ocupadas
                     sumVerify += 1;
                 } else if (datoHabitacion.equalsIgnoreCase(cama2)) {
                     sumVerify += 2;
@@ -671,7 +672,7 @@ public class Procesos {
             int pago = 0;
 
             // Buscar en archivo del paciente
-            while ((linea = datosArchivo.readLine()) != null) {
+            while ((linea = datosArchivo.readLine()) != null) {     // El while recorre todo el archivo para buscar el id que se ingreso 
 
                 if (linea.trim().isEmpty()) {
                     continue;
@@ -688,8 +689,8 @@ public class Procesos {
             }
 
             // Archivo listaPacientes --> limpiar línea
-            archivoOriginal = new File(RUTA + listaPacientes);
-            archivoTemporal = new File(RUTA + "temp.txt");
+            archivoOriginal = new File(RUTA + listaPacientes);          
+            archivoTemporal = new File(RUTA + "temp.txt");          
             archivoOriginalLectura = new FileReader(archivoOriginal);
             archivoTemporalEscritua = new FileWriter(archivoTemporal);
             lector = new BufferedReader(archivoOriginalLectura);
@@ -777,13 +778,15 @@ public class Procesos {
             // DE Archivo
             String linea = "";
 
-            // DS
+            // DS 
             String acumuladoMensaje = "";
 
             datosArchivo.readLine(); // Saltear primera linea la cual no nos importa que imprima
             while ((linea = datosArchivo.readLine()) != null) {
 
                 acumuladoMensaje += linea + "\n";
+
+                
 
             }
 
@@ -817,6 +820,8 @@ public class Procesos {
             archivoEscritura = new FileWriter(ubicacionArchivoIndicacionesPaciente, true);
             escritura = new PrintWriter(archivoEscritura);
 
+
+            // Añadir un mensaje al id.txt
             escritura.println(textoAñadir
                     + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
 
@@ -889,6 +894,8 @@ public class Procesos {
             archivoEscritura = new FileWriter(ubicacionArchivoPaciente, true);
             escritura = new PrintWriter(archivoEscritura);
 
+
+            // Añadir mensaje a Id.txt
             escritura.println(textoAñadir
                     + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
 
@@ -920,6 +927,7 @@ public class Procesos {
             archivoEscritura = new FileWriter(ubicacionArchivoPaciente, true);
             escritura = new PrintWriter(archivoEscritura);
 
+                // Añadir mensaje a Id.txt
             escritura.println(textoAñadir
                     + "\n\n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
 
