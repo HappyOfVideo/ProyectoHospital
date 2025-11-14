@@ -1,10 +1,9 @@
 package com.vaadin.proyectofinalvaadin.Controller;
 
 import java.io.*;
+import java.time.LocalDateTime;
 
-import com.vaadin.flow.component.button.Button;
-
-import jakarta.el.ELException;
+import com.vaadin.flow.component.notification.Notification;
 
 public class Procesos {
 
@@ -12,6 +11,7 @@ public class Procesos {
     public static final String RUTA = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\"; // Ruta carpeta de
                                                                                                   // archivos
     public static final String RUTA_CARPETA_PACIENTES = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\pacientes\\";
+    public static final String RUTA_CARPETA_FACTURA = "src\\main\\java\\com\\vaadin\\proyectofinalvaadin\\src\\facturas\\";
 
     public static String nombreUsuarioActual = "";
 
@@ -584,9 +584,6 @@ public class Procesos {
         FileReader archivoLectura = null;
         BufferedReader datosArchivo = null;
 
-        FileWriter archivoEscrituraLista = null;
-        PrintWriter escrituraLista = null;
-
         File archivoOriginal = null;
         File archivoTemporal = null;
         FileReader archivoOriginalLectura = null;
@@ -594,24 +591,28 @@ public class Procesos {
         BufferedReader lector = null;
         BufferedWriter escritor = null;
 
-        try {
+        FileWriter facturaWriter = null;
+        PrintWriter facturaPrint = null;
 
+        try {
             // Variables para lectura
-            String listaPacientes = "listaPacientes.txt"; // archivo al que entraran datos generales de pacientes
+            String listaPacientes = "listaPacientes.txt"; 
             ubicacionArchivoPaciente = new File((RUTA_CARPETA_PACIENTES + dIPaciente.trim() + ".txt"));
             archivoLectura = new FileReader(ubicacionArchivoPaciente);
             datosArchivo = new BufferedReader(archivoLectura);
 
-            // DE archivo
+            //DE archivo
             String linea = "";
-            String[] datosSeparados = null; // Creacion de vector tipo String para separar datos del .split()
+            String[] datosSeparados = null;
+            String nombrePaciente = null;
             String datoHabitacion = "";
             String datoDI = "";
 
-            // DS
+            //DS
             int diasInt = Integer.parseInt(dias);
             int pago = 0;
 
+            //Buscar en archivo del paciente
             while ((linea = datosArchivo.readLine()) != null) {
 
                 if (linea.trim().isEmpty()) {
@@ -619,15 +620,16 @@ public class Procesos {
                 }
 
                 datosSeparados = linea.trim().split(";");
+                nombrePaciente = datosSeparados[0];
                 datoDI = datosSeparados[1];
                 datoHabitacion = datosSeparados[2];
 
                 if (datoDI.equalsIgnoreCase(dIPaciente)) {
                     break;
                 }
-
             }
 
+            // Archivo listaPacientes --> limpiar línea
             archivoOriginal = new File(RUTA + listaPacientes);
             archivoTemporal = new File(RUTA + "temp.txt");
             archivoOriginalLectura = new FileReader(archivoOriginal);
@@ -635,25 +637,29 @@ public class Procesos {
             lector = new BufferedReader(archivoOriginalLectura);
             escritor = new BufferedWriter(archivoTemporalEscritua);
 
-            String lineaBorrar = "";
             while ((linea = lector.readLine()) != null) {
 
                 if (!linea.contains(dIPaciente)) {
                     escritor.write(linea);
                     escritor.newLine();
                 }
-
             }
-            lector.close(); // Para poder borrar sin problema el archivo
-            archivoOriginal.delete();
 
+            lector.close(); 
+            escritor.close();
+
+            archivoOriginal.delete();
             archivoTemporal.renameTo(archivoOriginal);
 
-            archivoEscrituraLista = new FileWriter(ubicacionArchivoPaciente, true);
-            escrituraLista = new PrintWriter(archivoTemporal);
 
-            escrituraLista.println("\n\n//////////////////////////-PAGO-//////////////////////////\n");
-            escrituraLista.println("El usuario se ha hospedado:" + dias + "Días en el hospital");
+            //Crear archivo factura
+            File archivoFactura = new File(RUTA_CARPETA_FACTURA + datoDI + "Factura.txt");
+            facturaWriter = new FileWriter(archivoFactura, true);
+            facturaPrint = new PrintWriter(facturaWriter);
+
+            facturaPrint.println("\n\n//////////////////////////- FACTURA -//////////////////////////\n\n");
+            facturaPrint.println("Fecha y hora: "+LocalDateTime.now()+"\n\n");
+            facturaPrint.println("El usuario: "+ nombrePaciente +" se ha hospedado [ " + dias + " ] día(s) en el hospital\n\n");
 
             if (datoHabitacion.contains("A")) {
                 pago = diasInt * 350000;
@@ -661,24 +667,30 @@ public class Procesos {
                 pago = diasInt * 175000;
             }
 
-            escrituraLista.println("\nEl total de pago es: $" + pago);
-            escrituraLista.println("\n\n//////////////////////////////////////////////////////////////\n\n");
+            facturaPrint.println("El total de pago es: $" + pago);
+            facturaPrint.println("\n\n//////////////////////////- BUEN DÍA -//////////////////////////\n");
 
         } catch (IOException io) {
-            throw new IOException("Error en la consulta de archivos" + io.getMessage());// Posibles errores por consulta
-                                                                                        // de archivos (IOException)
+            Notification.show("Error en io"+io.getMessage());
+            throw new IOException("Error en la consulta de archivos " + io.getMessage());
         } catch (Exception e) {
-            throw new Exception("Error generico:" + e.getMessage()); // Posibles errores genericos
+            Notification.show("Error generico"+e.getMessage());
+            throw new Exception("Error generico: " + e.getMessage()); 
         } finally {
-            // cerrar los archivos abiertos tanto de escritura como de lectura para guardar
-            // cambios y no consumir más memoria
-            datosArchivo.close();
-            escritor.close();
-            archivoEscrituraLista.close();
-            escrituraLista.close();
-
+            //Ayuda de (IA) porque habian errores inencontrables y ejecuciones que no se hacian 
+            /*Se tienen que hacer una verificación de que no sean nulos para evitar:
+             * Que el programa explote
+             * No se pierdan excepciones importantes
+             * No se corrompan archivos temporales
+             * No se interrumpa la lógica del rename/delete
+            */
+            //(IA)
+            if (datosArchivo != null) datosArchivo.close();
+            if (facturaPrint != null) facturaPrint.close();
+            if (facturaWriter != null) facturaWriter.close();
+            if (archivoLectura != null) archivoLectura.close();
+            if (archivoOriginalLectura != null) archivoOriginalLectura.close();
+            if (archivoTemporalEscritua != null) archivoTemporalEscritua.close();
         }
-
     }
-
 }

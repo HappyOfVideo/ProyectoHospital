@@ -286,48 +286,75 @@ public class menuEnfermeros extends VerticalLayout {
             "this.style.setProperty('--lumo-text-field-border-color', '#bdc3c7');" +
             "this.style.setProperty('--lumo-text-field-border-radius', '8px');" +
             "this.style.setProperty('--lumo-text-field-border-width', '2px');"
-        );
-    }
+            );
+        }
+        
+        public void mostrarVistaEnfermeros() {
+            
+            contenedor.removeAll(); // Oculta la vista original
+            
+            HorizontalLayout layoutGeneral = new HorizontalLayout();
+            layoutGeneral.setSizeFull();
+            
+            //Menú lateral
+            VerticalLayout menuLateral = new VerticalLayout();
+            menuLateral.setWidth("290px");
+            menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
+            
+            Button btn0 = new Button("Historia medica");
+            Button btn1 = new Button("Notas diarias");
+            Button btn2 = new Button("Medicamentos suministrados");
+            Button btn3 = new Button("Evolución del paciente");
+            Button btnRegresar = new Button("Regresar");
+            btnRegresar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+            
+            menuLateral.add(btn0, btn1, btn2, btn3, btnRegresar);
+            
+            // Header
+            HorizontalLayout headerLayout = new HorizontalLayout();
+            headerLayout.setWidthFull();
+            headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+            headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+            headerLayout.getStyle().set("margin-bottom", "20px");
 
-    private void mostrarVistaEnfermeros() {
+            // Título principal
+            H1 mainTitle = new H1("Paciente: "/*TODO: Agregar el nombre de la persona que se busco*/);
+            mainTitle.getStyle()
+                .set("color", "#2c3e50")
+                .set("margin", "0")
+                .set("font-size", "30px")
+                .set("font-weight", "bold")
+                .set("text-shadow", "1px 1px 2px #0000001a")
+            ;
 
-        contenedor.removeAll(); // Oculta la vista original
+            headerLayout.add(mainTitle);
+            // Panel central
+            VerticalLayout panelCentral = new VerticalLayout();
+            panelCentral.setSizeFull();
+            panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+            
+            //Eventos
+            btn0.addClickListener(e -> cargarPanelSoloTitulo("Historia medica", panelCentral));
+            btn1.addClickListener(e -> cargarPanel("Notas diarias", panelCentral)); //TODO: Cargar lo que se guardo de "indicaciones a enfermeras" que hizo el médico
+            btn2.addClickListener(e -> cargarPanelMedicamentos("Medicamentos Suministrados", panelCentral)); //TODO: Cargar la tabla que se guardo de "medicamentos suministrados" que hizo el médico, mirar funcion abajo
+            btn3.addClickListener(e -> cargarPanel("Evolución del paciente", panelCentral));
+            btnRegresar.addClickListener(e -> restaurarVistaOriginal());
+            
+            layoutGeneral.add(menuLateral, panelCentral);
+            
+            contenedor.add(headerLayout,layoutGeneral);
+        }
 
-        HorizontalLayout layoutGeneral = new HorizontalLayout();
-        layoutGeneral.setSizeFull();
-
-        // --- Menú lateral ---
-        VerticalLayout menuLateral = new VerticalLayout();
-        menuLateral.setWidth("290px");
-        menuLateral.getStyle().set("background", "#f2f2f2").set("padding", "20px");
-
-        Button btn0 = new Button("Historia medica");
-        Button btn1 = new Button("Notas diarias");
-        Button btn2 = new Button("Medicamentos suministrados");
-        Button btn3 = new Button("Evolución del paciente");
-        Button btnRegresar = new Button("Regresar");
-        btnRegresar.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
-        menuLateral.add(btn0, btn1, btn2, btn3, btnRegresar);
-
-        // --- Panel central ---
-        VerticalLayout panelCentral = new VerticalLayout();
-        panelCentral.setSizeFull();
-        panelCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-
-        // Eventos
-        btn0.addClickListener(e -> cargarPanelSoloTitulo("Historia medica", panelCentral));
-        btn1.addClickListener(e -> cargarPanel("Notas diarias", panelCentral));
-        btn2.addClickListener(e -> cargarPanel("Medicamentos Suministrados", panelCentral));
-        btn3.addClickListener(e -> cargarPanel("Evolución del paciente", panelCentral));
-        btnRegresar.addClickListener(e -> restaurarVistaOriginal());
-
-        layoutGeneral.add(menuLateral, panelCentral);
-
-        contenedor.add(layoutGeneral);
-    }
-
-    private void cargarPanel(String titulo, VerticalLayout panel) {
+        public void restaurarVistaOriginal() {
+            contenedor.removeAll();
+            if (!contenedorBackup.isEmpty()) {
+                contenedor.add(contenedorBackup.toArray(new Component[0]));
+            } else {
+                Notification.show("No hay vista para restaurar.");
+            }
+        }
+        
+        public static void cargarPanel(String titulo, VerticalLayout panel) {
         panel.removeAll();
 
         H1 title = new H1(titulo);
@@ -341,22 +368,24 @@ public class menuEnfermeros extends VerticalLayout {
         panel.add(title, area, guardar);
     }
 
-    private void cargarPanelSoloTitulo(String titulo, VerticalLayout panel) {
+    public static void cargarPanelMedicamentos(String titulo, VerticalLayout panel) {
+
+        panel.removeAll();
+
+        H1 title = new H1(titulo);
+
+        //TODO: cargar la tabla y que no se pueda modificar
+
+        panel.add(title);
+    }
+
+    public static void cargarPanelSoloTitulo(String titulo, VerticalLayout panel) {
         panel.removeAll();
         H1 title = new H1(titulo);
         title.getStyle()
             .set("margin-top", "40px")
             .set("color", "#2c3e50");
         panel.add(title);
-    }
-
-    private void restaurarVistaOriginal() {
-        contenedor.removeAll();
-        if (!contenedorBackup.isEmpty()) {
-            contenedor.add(contenedorBackup.toArray(new Component[0]));
-        } else {
-            Notification.show("No hay vista para restaurar.");
-        }
     }
 
 }

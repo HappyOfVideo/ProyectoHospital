@@ -1,7 +1,5 @@
 package com.vaadin.proyectofinalvaadin;
 
-import java.io.IOException;
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,8 +14,6 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.proyectofinalvaadin.Controller.Procesos;
 
@@ -113,7 +109,7 @@ public class imprimirFactura extends VerticalLayout {
                     .set("width", "100%")
                     .set("text-align", "center")
                     .set("box-shadow", "0 4px 20px rgba(0,0,0,0.1)")
-                    .set("margin-top", "180px")
+                    .set("margin-top", "110px")
                     .set("padding-left", "110px");
             ;
 
@@ -137,7 +133,7 @@ public class imprimirFactura extends VerticalLayout {
             ;
             IntegerField documentoPaciente = new IntegerField("Ingrese el documento");
             documentoPaciente.setPlaceholder("Ej: cc");
-            TextField diasActivo = new TextField("Ingrese dias activo");
+            IntegerField diasActivo = new IntegerField("Ingrese dias activo");
             diasActivo.setPlaceholder("Días");
 
             // Contenerdor de botones
@@ -151,8 +147,28 @@ public class imprimirFactura extends VerticalLayout {
                     .set("color", "#ffffff");
             ;
             try {
-                agregar.addClickListener(e -> {
-                    UI.getCurrent().navigate("");
+                agregar.addClickListener(ev -> {
+                        String dp = String.valueOf(documentoPaciente.getValue());
+                        String da = String.valueOf(diasActivo.getValue());
+                        if (dp == null || da == null) {
+                                Notification.show("Los campos no pueden estar vacío");
+                                return;
+                        } else if (!dp.matches("\\d*") && !da.matches("\\d*")) {
+                                Notification.show("No se permiten tildes ni caracteres especiales");
+                                return;
+                        } else {
+                                try {
+                                        Procesos.facturar(dp, da);
+                                        Notification.show("Factura generada corrrectamente, feliz día");              
+                                        return;
+                                } catch (Exception e) {
+                                        Notification.show("Error al facturar, contactar soporte");
+                                }
+                                documentoPaciente.clear();
+                                diasActivo.clear();
+
+                        }
+
                 });
             } catch (Exception e) {
                 Notification.show("Error en el botón, contactar con soporte");

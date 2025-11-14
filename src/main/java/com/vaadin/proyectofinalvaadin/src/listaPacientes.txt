@@ -1,6 +1,5 @@
 nombre;id;habitacion
 null;null;null
-Joe Donh;15647802;A1
 Juan Paella;1043115530;A4
 Miguel Argaez;12893731;A10
 Carlos Higuita;18122171;B1 - C1
