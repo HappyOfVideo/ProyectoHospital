@@ -1,9 +1,6 @@
 package com.vaadin.proyectofinalvaadin;
 
 import com.vaadin.flow.component.Key;
-import java.util.ArrayList;
-import java.util.List;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -64,8 +61,9 @@ public class menuMedicos extends VerticalLayout {
 
     }
 
-    private List<Component> contenedorBackup = new ArrayList<>(); // Copia para restaurar
-    private Div contenedor; // El contenedor principal
+    private Div contenedor;       // El contenedor principal
+    private Div seccionBusqueda;  // Vista del buscador — visible por defecto
+    private Div seccionPaciente;  // Vista del detalle del paciente — oculta por defecto
 
     // Construir hero, agregara los componentes del encabezado inicial de la pagina
     public void construirHero(FormLayout hero) {
@@ -260,7 +258,19 @@ public class menuMedicos extends VerticalLayout {
             seccionBusquedas.add(subTitle, searchLayout);
             instrucciones.add(txtInstrunciones);
             footer.add(hospital);
-            contenedor.add(headerLayout, seccionBusquedas, instrucciones, footer);
+
+            // seccionBusqueda agrupa todo el buscador — se oculta cuando se encuentra un paciente
+            seccionBusqueda = new Div();
+            seccionBusqueda.setWidthFull();
+            seccionBusqueda.add(seccionBusquedas, instrucciones, footer);
+
+            // seccionPaciente empieza oculta — se llena y muestra en mostrarVistaMenu()
+            seccionPaciente = new Div();
+            seccionPaciente.setWidthFull();
+            seccionPaciente.setVisible(false);
+
+            // headerLayout (con MenuBar) queda siempre en contenedor — nunca se remueve del DOM
+            contenedor.add(headerLayout, seccionBusqueda, seccionPaciente);
             hero.add(contenedor);
 
         } catch (Exception e) {
@@ -268,9 +278,7 @@ public class menuMedicos extends VerticalLayout {
             System.err.println("Error en construirHero: " + error);
             e.printStackTrace();
         }
-        // Guardamos referencia a los hijos actuales del contenedor en la lista de
-        // backup
-        contenedor.getChildren().forEach(child -> contenedorBackup.add(child));
+        // ya no se necesita backup — se usa setVisible() para alternar vistas
 
     }
 
@@ -317,11 +325,8 @@ public class menuMedicos extends VerticalLayout {
     public void mostrarVistaMenu() {
         try {
             
-            contenedor.removeAll(); // borra vista original
-            contenedor.getStyle()
-                .set("margin", "60px")
-                .set("scroll-y","auto")
-            ;
+            seccionBusqueda.setVisible(false); // Oculta la vista del buscador
+            seccionPaciente.removeAll();       // Limpia contenido anterior del paciente
     
             HorizontalLayout layoutGeneral = new HorizontalLayout();
             layoutGeneral.setSizeFull();
@@ -374,8 +379,10 @@ public class menuMedicos extends VerticalLayout {
             btnRegresar.addClickListener(e -> restaurarVistaOriginal());
     
             layoutGeneral.add(menuLateral, panelCentral);
-    
-            contenedor.add(headerLayout, layoutGeneral);
+
+            // Agrega el contenido del paciente a seccionPaciente y la hace visible
+            seccionPaciente.add(headerLayout, layoutGeneral);
+            seccionPaciente.setVisible(true);
         } catch (Exception e) {
             Notification.show("Error al generar vista del menu");
             return;
@@ -384,12 +391,9 @@ public class menuMedicos extends VerticalLayout {
 
     public void restaurarVistaOriginal() {
         try {
-            contenedor.removeAll();
-            if (!contenedorBackup.isEmpty()) {
-                contenedor.add(contenedorBackup.toArray(new Component[0]));
-            } else {
-                Notification.show("No hay vista para restaurar.");
-            }
+            seccionPaciente.setVisible(false); // Oculta la vista del paciente
+            seccionPaciente.removeAll();       // Limpia el contenido para la próxima búsqueda
+            seccionBusqueda.setVisible(true);  // Muestra de nuevo el buscador
         } catch (Exception e) {
             System.out.println("Error en vista original");
         }
