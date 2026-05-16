@@ -89,7 +89,7 @@ public class menuAdministrativos extends VerticalLayout {
                         MenuBar menuBar = new MenuBar();
                         MenuItem menu = menuBar.addItem(new Icon(VaadinIcon.USER));
                         SubMenu subMenu = menu.getSubMenu();
-                        subMenu.addItem(Procesos.NOMBRE_USER_ACTUAL).setEnabled(false);
+                        subMenu.addItem(Procesos.getNombreUser()).setEnabled(false);
                         subMenu.addItem("⏻ Cerrar sesión", e -> {
                                 UI.getCurrent().navigate("");
                         }).getStyle().set("color", "#ff0000ff");

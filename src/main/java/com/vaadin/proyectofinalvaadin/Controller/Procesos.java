@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.server.VaadinSession;
 
 public class Procesos {
 
@@ -112,6 +113,8 @@ public class Procesos {
 
                 if (datoUser.equals(String.valueOf(user.longValue()))) {
                     NOMBRE_USER_ACTUAL = nombreUser;
+                    // Guardar en sesión para que persista al navegar entre páginas
+                    VaadinSession.getCurrent().setAttribute("NOMBRE_USER_ACTUAL", nombreUser);
                     break;
                 }
             }
@@ -128,6 +131,17 @@ public class Procesos {
             datosArchivo.close(); // Cerrar el archivo para que no consuma memoria adicional
         }
 
+    }
+
+    // Devuelve el nombre del usuario actual, primero desde la sesión y como
+    // respaldo desde la variable estática
+    public static String getNombreUser() {
+        try {
+            String nombre = (String) VaadinSession.getCurrent().getAttribute("NOMBRE_USER_ACTUAL");
+            return nombre != null ? nombre : NOMBRE_USER_ACTUAL;
+        } catch (Exception e) {
+            return NOMBRE_USER_ACTUAL;
+        }
     }
 
     public static void registroPacientesHabitacionesA(String nombre, String dI, String habitacion) throws Exception {

@@ -246,8 +246,11 @@ public class habitacionB extends VerticalLayout {
                                         if (dp.equals("null") || nombrePaciente.getValue().isEmpty()) {
                                                 Notification.show("Los campos no pueden estar vacío");
                                                 return;
-                                        } else if (!dp.matches("\\d*") || (nombrePaciente.getValue()).matches(REGEX)) {
-                                                Notification.show("No se permiten tildes ni caracteres especiales");
+                                        } else if (!dp.matches("\\d+") || dp.length() < 8) {
+                                                Notification.show("El documento debe ser numérico y tener mínimo 8 dígitos");
+                                                return;
+                                        } else if (!nombrePaciente.getValue().matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s\\-]+")) {
+                                                Notification.show("El nombre solo puede contener letras, tildes y espacios");
                                                 return;
                                         } else {
                                                 gridHabitaciones.setVisible(true);
@@ -349,9 +352,11 @@ public class habitacionB extends VerticalLayout {
                                         if (dp.equals("null") || nombrePacienteIZ.getValue().isEmpty()) {
                                                 Notification.show("Los campos no pueden estar vacío");
                                                 return;
-                                        } else if (!dp.matches("\\d*")
-                                                        || (nombrePacienteIZ.getValue()).matches(REGEX)) {
-                                                Notification.show("No se permiten tildes ni caracteres especiales");
+                                        } else if (!dp.matches("\\d+") || dp.length() < 8) {
+                                                Notification.show("El documento debe ser numérico y tener mínimo 8 dígitos");
+                                                return;
+                                        } else if (!nombrePacienteIZ.getValue().matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s\\-]+")) {
+                                                Notification.show("El nombre solo puede contener letras, tildes y espacios");
                                                 return;
                                         } else {
                                                 gridHabitaciones.setVisible(true);
