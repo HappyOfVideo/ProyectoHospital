@@ -8,3 +8,6 @@ Joe Donh;15647802;A1
 Carlos Rodriguez;34541717;A3
 Juan Uribe;12341487;B1 - C1
 James Rodriguez;1010101010;B2 - C2
+1;1;B13 - C1
+Juan;-1;B13 - C2
+-1;0;A2

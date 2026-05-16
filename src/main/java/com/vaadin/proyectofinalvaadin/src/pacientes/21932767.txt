@@ -1,0 +1,15 @@
+Miguel Arbeláez;21932767;A5
+El paciente llega con una fractura de tobillo, se le aplican medicamentos y se le hace la curación
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Diclofenaco 20mg
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+El paciente se envía a casa con las respectivas recomendaciones y con la curación realizada frente a su fractura
+
+Fecha y hora de la alta medica: 2026-05-15T23:22:45.280247600
+
+////////////-Alta Medica Generada para: 21932767-////////////
+

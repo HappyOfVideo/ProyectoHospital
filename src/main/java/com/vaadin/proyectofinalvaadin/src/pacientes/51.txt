@@ -1,0 +1,7 @@
+1;51;A2
+
+
+Fecha y hora de la alta medica: 2026-05-15T22:31:31.100512600
+
+////////////-Alta Medica Generada para: 51-////////////
+

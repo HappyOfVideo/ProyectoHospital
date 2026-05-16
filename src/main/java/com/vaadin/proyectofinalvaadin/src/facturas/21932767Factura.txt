@@ -1,0 +1,32 @@
+
+
+//////////////////////////- FACTURA -//////////////////////////
+
+
+Fecha y hora: 2026-05-15T23:23:18.573810
+
+
+El usuario: Miguel Arbeláez se ha hospedado [ 1 ] día(s) en el hospital
+
+
+El total de pago es: $350000
+
+
+//////////////////////////- BUEN DÍA -//////////////////////////
+
+
+
+//////////////////////////- FACTURA -//////////////////////////
+
+
+Fecha y hora: 2026-05-15T23:23:19.122735700
+
+
+El usuario: Miguel Arbeláez se ha hospedado [ 1 ] día(s) en el hospital
+
+
+El total de pago es: $350000
+
+
+//////////////////////////- BUEN DÍA -//////////////////////////
+
