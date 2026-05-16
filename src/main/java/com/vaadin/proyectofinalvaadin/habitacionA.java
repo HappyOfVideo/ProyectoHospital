@@ -219,10 +219,10 @@ public class habitacionA extends VerticalLayout {
                         //evento al darle click, valida errores y ejecuta cuando esta bien
                         agregar.addClickListener(e -> {
                                 String dp = String.valueOf(documentoPaciente.getValue());
-                                if (dp == null || nombrePaciente.getValue().equals("")) {
+                                if (dp.equals("null") || nombrePaciente.getValue().isEmpty()) {
                                         Notification.show("Los campos no pueden estar vacío");
                                         return;
-                                } else if (!dp.matches("\\d*") && (nombrePaciente.getValue()).matches(REGEX)) {
+                                } else if (!dp.matches("\\d*") || (nombrePaciente.getValue()).matches(REGEX)) {
                                         Notification.show("No se permiten tildes ni caracteres especiales");
                                         return;
                                 } else {

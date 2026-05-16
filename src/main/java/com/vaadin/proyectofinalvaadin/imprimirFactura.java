@@ -161,7 +161,7 @@ public class imprimirFactura extends VerticalLayout {
                                         } else if (!dp.matches("\\d*") || !da.matches("\\d*")) {
                                                 Notification.show("No se permiten tildes ni caracteres especiales");
                                                 return;
-                                        }else if (!RUTA_PACIENTES.contains(dp)) {
+                                        } else if (!new java.io.File(Procesos.RUTA_CARPETA_PACIENTES + dp + ".txt").exists()) {
                                                 Notification.show("Usuario no encontrado");
                                                 return;
                                         } else {

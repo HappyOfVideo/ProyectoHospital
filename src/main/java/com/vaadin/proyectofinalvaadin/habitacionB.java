@@ -243,25 +243,12 @@ public class habitacionB extends VerticalLayout {
                         try {
                                 agregar.addClickListener(e -> {
                                         String dp = String.valueOf(documentoPaciente.getValue());
-                                        if (dp == null || nombrePaciente.getValue().equals("")) {
-                                                Notification.show("Los campos no pueden estar vacío"); // Si algún campo
-                                                                                                       // está vacío se
-                                                                                                       // muestra una
-                                                                                                       // notificación y
-                                                                                                       // se detiene la
-                                                                                                       // ejecución.
+                                        if (dp.equals("null") || nombrePaciente.getValue().isEmpty()) {
+                                                Notification.show("Los campos no pueden estar vacío");
                                                 return;
-                                        } else if (!dp.matches("\\d*") && (nombrePaciente.getValue()).matches(REGEX)) {
-                                                Notification.show("No se permiten tildes ni caracteres especiales"); // dp.matches("\\d*")
-                                                                                                                     // →
-                                                                                                                     // el
-                                                                                                                     // documento
-                                                                                                                     // debe
-                                                                                                                     // contener
-                                                                                                                     // solo
-                                                                                                                     // números
-                                                return; // REGEX valida que el nombre no tenga caracteres inválidos
-                                                        // (tildes, ñ, símbolos)
+                                        } else if (!dp.matches("\\d*") || (nombrePaciente.getValue()).matches(REGEX)) {
+                                                Notification.show("No se permiten tildes ni caracteres especiales");
+                                                return;
                                         } else {
                                                 gridHabitaciones.setVisible(true);
                                                 detalles.setVisible(false);
@@ -359,11 +346,11 @@ public class habitacionB extends VerticalLayout {
 
                                 agregarIZ.addClickListener(e -> {
                                         String dp = String.valueOf(documentoPacienteIZ.getValue());
-                                        if (dp == null || nombrePacienteIZ.getValue().equals("")) {
+                                        if (dp.equals("null") || nombrePacienteIZ.getValue().isEmpty()) {
                                                 Notification.show("Los campos no pueden estar vacío");
                                                 return;
                                         } else if (!dp.matches("\\d*")
-                                                        && (nombrePacienteIZ.getValue()).matches(REGEX)) {
+                                                        || (nombrePacienteIZ.getValue()).matches(REGEX)) {
                                                 Notification.show("No se permiten tildes ni caracteres especiales");
                                                 return;
                                         } else {

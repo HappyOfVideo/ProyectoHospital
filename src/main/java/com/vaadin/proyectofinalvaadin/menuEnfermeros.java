@@ -101,7 +101,7 @@ public class menuEnfermeros extends VerticalLayout {
             MenuBar menuBar = new MenuBar();
             MenuItem menu = menuBar.addItem(new Icon(VaadinIcon.USER));
             SubMenu subMenu = menu.getSubMenu();
-            subMenu.addItem(Procesos.NOMBRE_PACIENTE_ACTUAL).setEnabled(false);
+            subMenu.addItem(Procesos.NOMBRE_USER_ACTUAL).setEnabled(false);
             subMenu.addItem("⏻ Cerrar sesión", e -> {
                 UI.getCurrent().navigate("");
             }).getStyle().set("color", "#ff0000ff");
@@ -143,7 +143,7 @@ public class menuEnfermeros extends VerticalLayout {
                     } else if ((searchByName.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByName.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 
@@ -167,7 +167,7 @@ public class menuEnfermeros extends VerticalLayout {
                         Notification.show("El campo no puede estar vacio");
                     } else if ((searchByDocument.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten caracteres especiales");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 
@@ -191,7 +191,7 @@ public class menuEnfermeros extends VerticalLayout {
                     } else if ((searchByRoom.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByRoom.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales, exceptuando \"-\"");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 

@@ -116,7 +116,7 @@ public class Procesos {
                 }
             }
 
-            return NOMBRE_PACIENTE_ACTUAL; // Regresa el valor de nombreUser a donde sea invocada la funcion
+            return NOMBRE_USER_ACTUAL; // Regresa el valor de nombreUser a donde sea invocada la funcion
 
         } catch (IOException io) {
             throw new IOException("Error en la consulta de archivos" + io.getMessage()); // Posibles errores por

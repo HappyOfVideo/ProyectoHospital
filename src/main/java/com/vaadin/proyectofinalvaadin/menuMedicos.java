@@ -150,7 +150,7 @@ public class menuMedicos extends VerticalLayout {
                     } else if ((searchByName.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByName.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 
@@ -174,7 +174,7 @@ public class menuMedicos extends VerticalLayout {
                         Notification.show("El campo no puede estar vacio");
                     } else if ((searchByDocument.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten caracteres especiales");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 
@@ -197,7 +197,7 @@ public class menuMedicos extends VerticalLayout {
                     } else if ((searchByRoom.getValue()).matches(".*[áéíóúÁÉÍÓÚüÜ.*].*")
                             || (searchByRoom.getValue()).matches(".*[@#$%^&*()_+={}\\[\\]:;\"'<>,.?/\\\\|`~].*")) {
                         Notification.show("No se permiten tildes ni caracteres especiales, exceptuando \"-\"");
-                    } else if (dIPaciente.equals("") || dIPaciente.equals(null)) {
+                    } else if (dIPaciente == null || dIPaciente.isEmpty()) {
                         Notification.show("Paciente no existe o no registrado");
                     } else {
 
@@ -384,14 +384,12 @@ public class menuMedicos extends VerticalLayout {
 
     public void restaurarVistaOriginal() {
         try {
-            // limpia lo que haya en el contenedor (el layout del menú)
-            // vuelve a añadir los componentes originales desde la lista de backup
+            contenedor.removeAll();
             if (!contenedorBackup.isEmpty()) {
                 contenedor.add(contenedorBackup.toArray(new Component[0]));
             } else {
                 Notification.show("No hay vista para restaurar.");
             }
-            contenedor.removeAll();    
         } catch (Exception e) {
             System.out.println("Error en vista original");
         }
