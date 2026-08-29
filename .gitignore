@@ -1,0 +1,9 @@
+target/
+*.class
+.idea/
+*.iml
+.vscode/
+src/main/java/com/vaadin/proyectofinalvaadin/src/pacientes/
+src/main/java/com/vaadin/proyectofinalvaadin/src/facturas/
+src/main/java/com/vaadin/proyectofinalvaadin/src/Indicaciones/
+src/main/java/com/vaadin/proyectofinalvaadin/src/*.txt
