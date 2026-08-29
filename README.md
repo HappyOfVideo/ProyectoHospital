@@ -6,7 +6,7 @@ Sistema de gestión hospitalaria desarrollado en Java con Spring Boot y Vaadin, 
 
 El sistema centraliza la operación básica de un hospital: registro de pacientes, asignación de habitaciones, seguimiento médico y generación de facturas. Cada tipo de usuario cuenta con su propia vista y permisos, reflejando cómo funcionaría en un entorno hospitalario real donde distintos roles necesitan distinta información.
 
-Este proyecto se desarrolló en pareja como práctica académica de Ingeniería de Sistemas, con énfasis en backend con Java y manejo de arquitectura por roles.
+Este proyecto se desarrolló en equipo como práctica académica de Ingeniería de Sistemas, con énfasis en backend con Java y manejo de arquitectura por roles.
 
 ### ✨ Funcionalidades
 
