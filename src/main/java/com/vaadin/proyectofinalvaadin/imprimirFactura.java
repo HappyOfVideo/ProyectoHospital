@@ -151,14 +151,16 @@ public class imprimirFactura extends VerticalLayout {
                         //evento al darle click, valida errores y ejecuta si todo esta bien
                         try {
                                 agregar.addClickListener(ev -> {
+                                        if (documentoPaciente.isEmpty() || diasActivo.isEmpty()) {
+                                                Notification.show("Los campos no pueden estar vacíos");
+                                                return;
+                                        }
+
                                         String dp = String.valueOf(documentoPaciente.getValue());
                                         String da = String.valueOf(diasActivo.getValue());
                                         Boolean tieneAlta = false;
 
-                                        if (dp == null || da == null) {
-                                                Notification.show("Los campos no pueden estar vacío");
-                                                return;
-                                        } else if (!dp.matches("\\d*") || !da.matches("\\d*")) {
+                                        if (!dp.matches("\\d*") || !da.matches("\\d*")) {
                                                 Notification.show("No se permiten tildes ni caracteres especiales");
                                                 return;
                                         } else if (!new java.io.File(Procesos.RUTA_CARPETA_PACIENTES + dp + ".txt").exists()) {

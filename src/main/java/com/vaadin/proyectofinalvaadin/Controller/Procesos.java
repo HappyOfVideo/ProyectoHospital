@@ -58,7 +58,7 @@ public class Procesos {
                 datoPassw = datosSeparados[3].trim(); // Lee la columna 4 del archivo (Contraseña)
 
                 if (datoTipo.equalsIgnoreCase(tipo) && datoUser.equals(String.valueOf(user.longValue()))
-                        && datoPassw.equals("passw")) {
+                        && datoPassw.equals(passw)) {
                     credencialesValidas = true; // Cambia el valor de credencialesValidas en caso de que el tipo de
                                                 // usuario, el usuario y la contraseña sean correctas
                     break;
